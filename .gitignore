@@ -1,0 +1,101 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# python envs
+venv/
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Django
+*.log
+local_settings.py
+media/
+staticfiles/
+static_root/
+
+
+# IDE / editors
+.idea/
+.vscode/
+*.iml
+
+# Type checking
+.mypy_cache/
+.pytype/
+.pyre/
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# Sphinx docs
+docs/_build/
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Project-specific data/models (uploads & intermediates)
+media/models/
+media/uploads/
+media/yolo/temp/
+media/yolo/models/
+media/sklearn/models/
+media/detection/temp/
+media/detection/result/
+media/detection/original/
+
+# Logs
+logs/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Yolo models
+hertz_studio_django_utils/yolo/Train/runs/
+
+# 技术支持文档
+shared/

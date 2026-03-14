@@ -1,0 +1,130 @@
+// 全局变量文件 - 简约现代风格
+
+// 颜色系统
+$primary-color: #2563eb;
+$primary-light: #3b82f6;
+$primary-dark: #1d4ed8;
+$success-color: #10b981;
+$warning-color: #f59e0b;
+$error-color: #ef4444;
+$info-color: #06b6d4;
+
+// 中性色系统
+$gray-50: #f9fafb;
+$gray-100: #f3f4f6;
+$gray-200: #e5e7eb;
+$gray-300: #d1d5db;
+$gray-400: #9ca3af;
+$gray-500: #6b7280;
+$gray-600: #4b5563;
+$gray-700: #374151;
+$gray-800: #1f2937;
+$gray-900: #111827;
+
+// 背景色
+$bg-primary: #ffffff;
+$bg-secondary: #f9fafb;
+$bg-tertiary: #f3f4f6;
+
+// 字体大小
+$font-size-xs: 12px;
+$font-size-sm: 14px;
+$font-size-base: 16px;
+$font-size-lg: 18px;
+$font-size-xl: 20px;
+$font-size-2xl: 24px;
+$font-size-3xl: 30px;
+$font-size-4xl: 36px;
+
+// 间距系统 - 4px基础单位
+$spacing-0: 0;
+$spacing-1: 4px;
+$spacing-2: 8px;
+$spacing-3: 12px;
+$spacing-4: 16px;
+$spacing-5: 20px;
+$spacing-6: 24px;
+$spacing-8: 32px;
+$spacing-10: 40px;
+$spacing-12: 48px;
+$spacing-16: 64px;
+$spacing-20: 80px;
+
+// 圆角系统
+$radius-none: 0;
+$radius-sm: 4px;
+$radius-md: 6px;
+$radius-lg: 8px;
+$radius-xl: 12px;
+$radius-2xl: 16px;
+$radius-full: 9999px;
+
+// 阴影系统
+$shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+$shadow-md:
+  0 4px 6px -1px rgba(0, 0, 0, 0.1),
+  0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow-lg:
+  0 10px 15px -3px rgba(0, 0, 0, 0.1),
+  0 4px 6px -2px rgba(0, 0, 0, 0.05);
+$shadow-xl:
+  0 20px 25px -5px rgba(0, 0, 0, 0.1),
+  0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+// 过渡时间
+$transition-fast: 0.15s;
+$transition-normal: 0.2s;
+$transition-slow: 0.3s;
+
+// 混合器
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin box-shadow($shadow: $shadow-md) {
+  box-shadow: $shadow;
+}
+
+@mixin transition($property: all, $duration: $transition-normal) {
+  transition: #{$property} #{$duration} ease;
+}
+
+@mixin card-style {
+  background: $bg-primary;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-sm;
+  border: 1px solid $gray-200;
+  transition: all 0.2s ease;
+
+  &:hover {
+    box-shadow: $shadow-md;
+  }
+}
+
+@mixin button-style($bg-color: $primary-color, $text-color: white) {
+  background: $bg-color;
+  color: $text-color;
+  border: 1px solid $bg-color;
+  border-radius: $radius-md;
+  padding: $spacing-3 $spacing-6;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: darken($bg-color, 8%);
+    border-color: darken($bg-color, 8%);
+  }
+
+  &:active {
+    background: darken($bg-color, 12%);
+  }
+}

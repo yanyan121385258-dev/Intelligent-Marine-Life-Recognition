@@ -1,0 +1,11 @@
+# ================hertz官方库================
+hertz-studio-django-ai
+hertz-studio-django-auth
+hertz-studio-django-captcha
+hertz-studio-django-kb
+hertz-studio-django-log
+hertz-studio-django-notice
+hertz-studio-django-system-monitor
+hertz-studio-django-wiki
+hertz-studio-django-yolo
+hertz-studio-django-yolo-train

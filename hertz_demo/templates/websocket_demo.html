@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket演示 - Hertz Server Django</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 2rem;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .demo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .demo-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .demo-header {
+            background: #667eea;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        
+        .demo-header h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .demo-content {
+            padding: 1.5rem;
+        }
+        
+        .connection-status {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .status-disconnected {
+            background: #f44336;
+            color: white;
+        }
+        
+        .status-connecting {
+            background: #ff9800;
+            color: white;
+        }
+        
+        .status-connected {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .message-area {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            height: 300px;
+            overflow-y: auto;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: #f9f9f9;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+        
+        .message {
+            margin-bottom: 0.5rem;
+            padding: 0.3rem;
+            border-radius: 3px;
+        }
+        
+        .message-system {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .message-user {
+            background: #e8f5e8;
+            color: #2e7d32;
+        }
+        
+        .message-echo {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+        
+        .message-error {
+            background: #ffebee;
+            color: #c62828;
+        }
+        
+        .message-notification {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .input-field {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5a6fd8;
+        }
+        
+        .btn-success {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #45a049;
+        }
+        
+        .btn-danger {
+            background: #f44336;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #da190b;
+        }
+        
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .chat-controls {
+            margin-bottom: 1rem;
+        }
+        
+        .chat-controls input {
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .back-link {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        
+        .back-link a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+        
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            body {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌐 WebSocket演示</h1>
+            <p>实时通信功能展示 - 支持聊天室和回声测试</p>
+        </div>
+        
+        <div class="demo-grid">
+            <!-- 回声测试 -->
+            <div class="demo-card">
+                <div class="demo-header">
+                    <h3>🔄 回声测试</h3>
+                    <p>发送消息，服务器会回声返回</p>
+                </div>
+                <div class="demo-content">
+                    <div class="connection-status status-disconnected" id="echo-status">未连接</div>
+                    <div class="message-area" id="echo-messages"></div>
+                    <div class="input-group">
+                        <input type="text" class="input-field" id="echo-input" placeholder="输入消息..." disabled>
+                        <button class="btn btn-primary" id="echo-send" disabled>发送</button>
+                    </div>
+                    <div class="input-group">
+                        <button class="btn btn-success" id="echo-connect">连接</button>
+                        <button class="btn btn-danger" id="echo-disconnect" disabled>断开</button>
+                        <button class="btn btn-primary" id="echo-clear">清空</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 聊天室 -->
+            <div class="demo-card">
+                <div class="demo-header">
+                    <h3>💬 聊天室</h3>
+                    <p>多用户实时聊天功能</p>
+                </div>
+                <div class="demo-content">
+                    <div class="connection-status status-disconnected" id="chat-status">未连接</div>
+                    <div class="chat-controls">
+                        <input type="text" class="input-field" id="username" placeholder="用户名" value="用户" style="width: 120px;">
+                        <input type="text" class="input-field" id="room-name" placeholder="房间名" value="general" style="width: 120px;">
+                        <button class="btn btn-success" id="chat-connect">加入聊天室</button>
+                        <button class="btn btn-danger" id="chat-disconnect" disabled>离开聊天室</button>
+                    </div>
+                    <div class="message-area" id="chat-messages"></div>
+                    <div class="input-group">
+                        <input type="text" class="input-field" id="chat-input" placeholder="输入消息..." disabled>
+                        <button class="btn btn-primary" id="chat-send" disabled>发送</button>
+                        <button class="btn btn-primary" id="chat-clear">清空</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="back-link">
+            <a href="/">← 返回首页</a>
+        </div>
+    </div>
+    
+    <script>
+        // WebSocket连接管理
+        let echoSocket = null;
+        let chatSocket = null;
+        
+        // DOM元素
+        const echoStatus = document.getElementById('echo-status');
+        const echoMessages = document.getElementById('echo-messages');
+        const echoInput = document.getElementById('echo-input');
+        const echoSendBtn = document.getElementById('echo-send');
+        const echoConnectBtn = document.getElementById('echo-connect');
+        const echoDisconnectBtn = document.getElementById('echo-disconnect');
+        const echoClearBtn = document.getElementById('echo-clear');
+        
+        const chatStatus = document.getElementById('chat-status');
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input');
+        const chatSendBtn = document.getElementById('chat-send');
+        const chatConnectBtn = document.getElementById('chat-connect');
+        const chatDisconnectBtn = document.getElementById('chat-disconnect');
+        const chatClearBtn = document.getElementById('chat-clear');
+        const usernameInput = document.getElementById('username');
+        const roomNameInput = document.getElementById('room-name');
+        
+        // 工具函数
+        function addMessage(container, message, type = 'system') {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message message-${type}`;
+            messageDiv.innerHTML = `<strong>[${message.timestamp}]</strong> ${message.message}`;
+            container.appendChild(messageDiv);
+            container.scrollTop = container.scrollHeight;
+        }
+        
+        function updateStatus(statusElement, status, text) {
+            statusElement.className = `connection-status status-${status}`;
+            statusElement.textContent = text;
+        }
+        
+        // 回声测试WebSocket
+        function connectEcho() {
+            updateStatus(echoStatus, 'connecting', '连接中...');
+            
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${window.location.host}/ws/echo/`;
+            
+            echoSocket = new WebSocket(wsUrl);
+            
+            echoSocket.onopen = function(e) {
+                updateStatus(echoStatus, 'connected', '已连接');
+                echoInput.disabled = false;
+                echoSendBtn.disabled = false;
+                echoConnectBtn.disabled = true;
+                echoDisconnectBtn.disabled = false;
+            };
+            
+            echoSocket.onmessage = function(e) {
+                const data = JSON.parse(e.data);
+                console.log('收到WebSocket消息:', data); // 调试信息
+                let messageType = 'system';
+                let displayMessage = data;
+                
+                if (data.type === 'echo_message') {
+                    messageType = 'echo';
+                    // 解码Unicode字符并创建显示用的消息对象
+                    let echoText = data.echo_message;
+                    if (typeof echoText === 'string') {
+                        // 处理可能的Unicode编码
+                        try {
+                            echoText = decodeURIComponent(escape(echoText));
+                        } catch (e) {
+                            // 如果解码失败，使用原始文本
+                            console.log('Unicode解码失败，使用原始文本');
+                        }
+                    }
+                    displayMessage = {
+                        message: echoText || data.echo_message || '回声消息',
+                        timestamp: data.timestamp || new Date().toLocaleTimeString()
+                    };
+                    console.log('处理回声消息:', displayMessage); // 调试信息
+                } else if (data.type === 'error') {
+                    messageType = 'error';
+                    displayMessage = {
+                        message: data.message || '发生错误',
+                        timestamp: data.timestamp || new Date().toLocaleTimeString()
+                    };
+                } else {
+                    // 处理其他类型的消息
+                    displayMessage = {
+                        message: data.message || JSON.stringify(data),
+                        timestamp: data.timestamp || new Date().toLocaleTimeString()
+                    };
+                }
+                
+                addMessage(echoMessages, displayMessage, messageType);
+            };
+            
+            echoSocket.onclose = function(e) {
+                updateStatus(echoStatus, 'disconnected', '已断开');
+                echoInput.disabled = true;
+                echoSendBtn.disabled = true;
+                echoConnectBtn.disabled = false;
+                echoDisconnectBtn.disabled = true;
+            };
+            
+            echoSocket.onerror = function(e) {
+                updateStatus(echoStatus, 'disconnected', '连接错误');
+                addMessage(echoMessages, {
+                    message: 'WebSocket连接发生错误',
+                    timestamp: new Date().toLocaleTimeString()
+                }, 'error');
+            };
+        }
+        
+        function disconnectEcho() {
+            if (echoSocket) {
+                echoSocket.close();
+            }
+        }
+        
+        function sendEchoMessage() {
+            const message = echoInput.value.trim();
+            if (message && echoSocket && echoSocket.readyState === WebSocket.OPEN) {
+                echoSocket.send(JSON.stringify({
+                    'message': message
+                }));
+                echoInput.value = '';
+            }
+        }
+        
+        // 聊天室WebSocket
+        function connectChat() {
+            const username = usernameInput.value.trim() || '匿名用户';
+            const roomName = roomNameInput.value.trim() || 'general';
+            
+            updateStatus(chatStatus, 'connecting', '连接中...');
+            
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsUrl = `${protocol}//${window.location.host}/ws/chat/${roomName}/`;
+            
+            chatSocket = new WebSocket(wsUrl);
+            
+            chatSocket.onopen = function(e) {
+                updateStatus(chatStatus, 'connected', `已连接到房间: ${roomName}`);
+                chatInput.disabled = false;
+                chatSendBtn.disabled = false;
+                chatConnectBtn.disabled = true;
+                chatDisconnectBtn.disabled = false;
+                usernameInput.disabled = true;
+                roomNameInput.disabled = true;
+                
+                // 发送加入通知
+                chatSocket.send(JSON.stringify({
+                    'type': 'user_join',
+                    'username': username
+                }));
+            };
+            
+            chatSocket.onmessage = function(e) {
+                const data = JSON.parse(e.data);
+                let messageType = 'system';
+                
+                if (data.type === 'chat_message') {
+                    messageType = 'user';
+                    data.message = `${data.username}: ${data.message}`;
+                } else if (data.type === 'user_notification') {
+                    messageType = 'notification';
+                } else if (data.type === 'error') {
+                    messageType = 'error';
+                }
+                
+                addMessage(chatMessages, data, messageType);
+            };
+            
+            chatSocket.onclose = function(e) {
+                updateStatus(chatStatus, 'disconnected', '已断开');
+                chatInput.disabled = true;
+                chatSendBtn.disabled = true;
+                chatConnectBtn.disabled = false;
+                chatDisconnectBtn.disabled = true;
+                usernameInput.disabled = false;
+                roomNameInput.disabled = false;
+            };
+            
+            chatSocket.onerror = function(e) {
+                updateStatus(chatStatus, 'disconnected', '连接错误');
+                addMessage(chatMessages, {
+                    message: 'WebSocket连接发生错误',
+                    timestamp: new Date().toLocaleTimeString()
+                }, 'error');
+            };
+        }
+        
+        function disconnectChat() {
+            if (chatSocket) {
+                const username = usernameInput.value.trim() || '匿名用户';
+                
+                // 发送离开通知
+                chatSocket.send(JSON.stringify({
+                    'type': 'user_leave',
+                    'username': username
+                }));
+                
+                setTimeout(() => {
+                    chatSocket.close();
+                }, 100);
+            }
+        }
+        
+        function sendChatMessage() {
+            const message = chatInput.value.trim();
+            const username = usernameInput.value.trim() || '匿名用户';
+            
+            if (message && chatSocket && chatSocket.readyState === WebSocket.OPEN) {
+                chatSocket.send(JSON.stringify({
+                    'type': 'chat_message',
+                    'message': message,
+                    'username': username
+                }));
+                chatInput.value = '';
+            }
+        }
+        
+        // 事件监听器
+        echoConnectBtn.addEventListener('click', connectEcho);
+        echoDisconnectBtn.addEventListener('click', disconnectEcho);
+        echoSendBtn.addEventListener('click', sendEchoMessage);
+        echoClearBtn.addEventListener('click', () => {
+            echoMessages.innerHTML = '';
+        });
+        
+        echoInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendEchoMessage();
+            }
+        });
+        
+        chatConnectBtn.addEventListener('click', connectChat);
+        chatDisconnectBtn.addEventListener('click', disconnectChat);
+        chatSendBtn.addEventListener('click', sendChatMessage);
+        chatClearBtn.addEventListener('click', () => {
+            chatMessages.innerHTML = '';
+        });
+        
+        chatInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendChatMessage();
+            }
+        });
+        
+        // 页面卸载时断开连接
+        window.addEventListener('beforeunload', function() {
+            if (echoSocket) {
+                echoSocket.close();
+            }
+            if (chatSocket) {
+                disconnectChat();
+            }
+        });
+    </script>
+</body>
+</html>

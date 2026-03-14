@@ -1,0 +1,25 @@
+'Log files:
+D:\hertz_django\hertz_server_django_ui\.npm-cache\_logs\2026-03-11T03_05_59_608Z-debug-0.log
+
+# npm resolution error report
+
+While resolving: hertz_server_django_ui@0.0.0
+Found: @typescript-eslint/eslint-plugin@8.44.0
+node_modules/@typescript-eslint/eslint-plugin
+  @typescript-eslint/eslint-plugin@"8.44.0" from typescript-eslint@8.44.0
+  node_modules/typescript-eslint
+    dev typescript-eslint@"^8.44.0" from the root project
+  dev @typescript-eslint/eslint-plugin@"*" from the root project
+
+Could not resolve dependency:
+dev @typescript-eslint/eslint-plugin@"*" from the root project
+
+Conflicting peer dependency: @typescript-eslint/parser@8.57.0
+node_modules/@typescript-eslint/parser
+  peer @typescript-eslint/parser@"^8.57.0" from @typescript-eslint/eslint-plugin@8.57.0
+  node_modules/@typescript-eslint/eslint-plugin
+    dev @typescript-eslint/eslint-plugin@"*" from the root project
+
+Fix the upstream dependency conflict, or retry
+this command with --force or --legacy-peer-deps
+to accept an incorrect (and potentially broken) dependency resolution.

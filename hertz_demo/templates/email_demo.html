@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>邮件系统演示 - Hertz Server Django</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 2rem;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .back-link {
+            margin-bottom: 1rem;
+        }
+        
+        .back-link a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+        }
+        
+        .back-link a:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+        
+        .demo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .demo-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .demo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .demo-card h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .demo-card p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e1e5e9;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 0.5rem;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5a6fd8;
+            transform: translateY(-2px);
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+        
+        .btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .alert {
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        .email-types {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .type-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid #667eea;
+            background: white;
+            color: #667eea;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .type-btn.active,
+        .type-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+        
+        .email-preview {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .email-preview h4 {
+            color: #495057;
+            margin-bottom: 0.5rem;
+        }
+        
+        .email-preview .preview-content {
+            background: white;
+            padding: 1rem;
+            border-radius: 3px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 1rem;
+        }
+        
+        .loading.show {
+            display: block;
+        }
+        
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 0.5rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            body {
+                padding: 1rem;
+            }
+            
+            .email-types {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="back-link">
+            <a href="/">← 返回首页</a>
+        </div>
+        
+        <div class="header">
+            <h1>📧 邮件系统演示</h1>
+            <p>体验Django邮件发送功能，支持多种邮件类型和模板</p>
+        </div>
+        
+        <div class="demo-grid">
+            <div class="demo-card">
+                <h3>📮 邮件发送功能</h3>
+                <p>本演示展示了Django邮件系统的核心功能：</p>
+                <ul style="color: #666; margin-left: 1.5rem; margin-bottom: 1rem;">
+                    <li>支持HTML和纯文本邮件</li>
+                    <li>多种邮件模板类型</li>
+                    <li>SMTP配置和发送状态</li>
+                    <li>邮件预览和验证</li>
+                </ul>
+                
+                <div class="email-types">
+                    <button class="type-btn active" data-type="welcome">欢迎邮件</button>
+                    <button class="type-btn" data-type="notification">通知邮件</button>
+                    <button class="type-btn" data-type="verification">验证邮件</button>
+                    <button class="type-btn" data-type="custom">自定义邮件</button>
+                </div>
+            </div>
+            
+            <div class="demo-card">
+                <h3>✉️ 发送邮件测试</h3>
+                
+                <div id="message-area"></div>
+                
+                <form id="email-form" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" id="email-type" name="email_type" value="welcome">
+                    
+                    <div class="form-group">
+                        <label for="recipient_email">收件人邮箱 *</label>
+                        <input type="email" id="recipient_email" name="recipient_email" required 
+                               placeholder="请输入收件人邮箱地址">
+                    </div>
+                    
+                    <div class="form-group" id="subject-group">
+                        <label for="subject">邮件主题</label>
+                        <input type="text" id="subject" name="subject" 
+                               placeholder="邮件主题将根据类型自动生成">
+                    </div>
+                    
+                    <div class="form-group" id="message-group" style="display: none;">
+                        <label for="message">邮件内容</label>
+                        <textarea id="message" name="message" 
+                                placeholder="请输入自定义邮件内容"></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="recipient_name">收件人姓名</label>
+                        <input type="text" id="recipient_name" name="recipient_name" 
+                               placeholder="收件人姓名（可选）">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" id="send-btn">
+                        📤 发送邮件
+                    </button>
+                    <button type="button" class="btn btn-success" id="preview-btn">
+                        👁️ 预览邮件
+                    </button>
+                </form>
+                
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>正在发送邮件，请稍候...</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="demo-card" id="preview-card" style="display: none;">
+            <h3>📋 邮件预览</h3>
+            <div class="email-preview">
+                <h4>邮件内容预览：</h4>
+                <div class="preview-content" id="preview-content">
+                    <!-- 预览内容将在这里显示 -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 邮件类型切换
+        document.querySelectorAll('.type-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                // 移除所有active类
+                document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+                // 添加active类到当前按钮
+                this.classList.add('active');
+                
+                const type = this.dataset.type;
+                document.getElementById('email-type').value = type;
+                
+                // 根据类型显示/隐藏字段
+                const subjectGroup = document.getElementById('subject-group');
+                const messageGroup = document.getElementById('message-group');
+                const subjectInput = document.getElementById('subject');
+                
+                if (type === 'custom') {
+                    messageGroup.style.display = 'block';
+                    subjectInput.placeholder = '请输入邮件主题';
+                    subjectInput.required = true;
+                } else {
+                    messageGroup.style.display = 'none';
+                    subjectInput.placeholder = '邮件主题将根据类型自动生成';
+                    subjectInput.required = false;
+                }
+                
+                // 更新预览
+                updatePreview();
+            });
+        });
+        
+        // 表单提交
+        document.getElementById('email-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const sendBtn = document.getElementById('send-btn');
+            const loading = document.getElementById('loading');
+            const messageArea = document.getElementById('message-area');
+            
+            // 显示加载状态
+            sendBtn.disabled = true;
+            loading.classList.add('show');
+            messageArea.innerHTML = '';
+            
+            fetch('/demo/email/', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                loading.classList.remove('show');
+                sendBtn.disabled = false;
+                
+                if (data.success) {
+                    messageArea.innerHTML = `
+                        <div class="alert alert-success">
+                            ✅ ${data.message}
+                        </div>
+                    `;
+                } else {
+                    messageArea.innerHTML = `
+                        <div class="alert alert-error">
+                            ❌ ${data.message}
+                        </div>
+                    `;
+                }
+            })
+            .catch(error => {
+                loading.classList.remove('show');
+                sendBtn.disabled = false;
+                messageArea.innerHTML = `
+                    <div class="alert alert-error">
+                        ❌ 发送失败：网络错误
+                    </div>
+                `;
+            });
+        });
+        
+        // 预览功能
+        document.getElementById('preview-btn').addEventListener('click', function() {
+            updatePreview();
+            const previewCard = document.getElementById('preview-card');
+            previewCard.style.display = previewCard.style.display === 'none' ? 'block' : 'none';
+        });
+        
+        function updatePreview() {
+            const type = document.getElementById('email-type').value;
+            const recipientName = document.getElementById('recipient_name').value || '用户';
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+            
+            let previewContent = '';
+            
+            switch(type) {
+                case 'welcome':
+                    previewContent = `
+                        <h4>🎉 欢迎加入我们！</h4>
+                        <p>亲爱的 ${recipientName}，</p>
+                        <p>欢迎您注册成为我们的用户！我们很高兴您能加入我们的大家庭。</p>
+                        <p>在这里，您可以享受到优质的服务和丰富的功能。如果您有任何问题，请随时联系我们。</p>
+                        <p>祝您使用愉快！</p>
+                        <p>此致<br>Hertz Server Django 团队</p>
+                    `;
+                    break;
+                case 'notification':
+                    previewContent = `
+                        <h4>🔔 系统通知</h4>
+                        <p>亲爱的 ${recipientName}，</p>
+                        <p>您有一条新的系统通知：</p>
+                        <div style="background: #f8f9fa; padding: 1rem; border-left: 4px solid #007bff; margin: 1rem 0;">
+                            <p>您的账户设置已更新，如果这不是您的操作，请立即联系我们。</p>
+                        </div>
+                        <p>如有疑问，请联系客服。</p>
+                        <p>此致<br>Hertz Server Django 团队</p>
+                    `;
+                    break;
+                case 'verification':
+                    previewContent = `
+                        <h4>🔐 邮箱验证</h4>
+                        <p>亲爱的 ${recipientName}，</p>
+                        <p>请点击下面的链接验证您的邮箱地址：</p>
+                        <div style="text-align: center; margin: 2rem 0;">
+                            <a href="#" style="background: #667eea; color: white; padding: 1rem 2rem; text-decoration: none; border-radius: 5px;">验证邮箱</a>
+                        </div>
+                        <p>如果您没有注册账户，请忽略此邮件。</p>
+                        <p>此致<br>Hertz Server Django 团队</p>
+                    `;
+                    break;
+                case 'custom':
+                    previewContent = `
+                        <h4>${subject || '自定义邮件'}</h4>
+                        <p>亲爱的 ${recipientName}，</p>
+                        <div style="margin: 1rem 0;">
+                            ${message ? message.replace(/\n/g, '<br>') : '请输入邮件内容'}
+                        </div>
+                        <p>此致<br>Hertz Server Django 团队</p>
+                    `;
+                    break;
+            }
+            
+            document.getElementById('preview-content').innerHTML = previewContent;
+        }
+        
+        // 初始化预览
+        updatePreview();
+    </script>
+</body>
+</html>

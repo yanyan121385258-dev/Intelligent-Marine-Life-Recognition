@@ -1,0 +1,629 @@
+// 全局样式入口文件
+@use 'variables' as *;
+@use 'sass:color';
+@use 'ocean-theme' as *;
+
+// 全局样式
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: linear-gradient(180deg, #000814 0%, #001d3d 30%, #003566 60%, #00509d 100%);
+  color: #caf0f8;
+}
+
+#app {
+  height: 100%;
+}
+
+// 按钮样式
+.btn {
+  @include transition(all);
+  padding: $spacing-3 $spacing-6;
+  border: 1px solid #00d4ff;
+  border-radius: 16px;
+  background: rgba(0, 29, 61, 0.9);
+  cursor: pointer;
+  font-weight: 500;
+  font-size: $font-size-sm;
+  line-height: 1.5;
+  color: #00d4ff;
+
+  &:hover {
+    border-color: #48cae4;
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+  }
+
+  &.btn-primary {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(72, 202, 228, 0.2));
+    border: 2px solid #00d4ff;
+    color: #00d4ff;
+    transition: all 0.4s ease;
+
+    &:hover {
+      background: linear-gradient(135deg, #00d4ff, #48cae4);
+      border-color: transparent;
+      color: #001d3d;
+      box-shadow: 0 0 50px rgba(0, 212, 255, 0.7);
+    }
+  }
+
+  &.btn-secondary {
+    background: transparent;
+    color: #90e0ef;
+    border: 2px solid rgba(0, 212, 255, 0.4);
+
+    &:hover {
+      background: rgba(0, 212, 255, 0.1);
+      border-color: #00d4ff;
+      color: #00d4ff;
+      box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+    }
+  }
+
+  &.btn-success {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.2));
+    border: 2px solid #10b981;
+    color: #10b981;
+
+    &:hover {
+      background: linear-gradient(135deg, #10b981, #059669);
+      border-color: transparent;
+      color: #001d3d;
+      box-shadow: 0 0 30px rgba(16, 185, 129, 0.6);
+    }
+  }
+
+  &.btn-danger {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.2));
+    border: 2px solid #ef4444;
+    color: #ef4444;
+
+    &:hover {
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      border-color: transparent;
+      color: #001d3d;
+      box-shadow: 0 0 30px rgba(239, 68, 68, 0.6);
+    }
+  }
+
+  &.btn-warning {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.2));
+    border: 2px solid #f59e0b;
+    color: #f59e0b;
+
+    &:hover {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      border-color: transparent;
+      color: #001d3d;
+      box-shadow: 0 0 30px rgba(245, 158, 11, 0.6);
+    }
+  }
+}
+
+// 卡片样式
+.card {
+  background: rgba(0, 29, 61, 0.9);
+  padding: $spacing-6;
+  margin-bottom: $spacing-4;
+  border-radius: 24px;
+  border: 2px solid rgba(0, 212, 255, 0.4);
+  box-shadow:
+    0 0 40px rgba(0, 212, 255, 0.2),
+    inset 0 0 30px rgba(0, 212, 255, 0.05);
+  backdrop-filter: blur(25px);
+}
+
+// 表单样式
+.form-item {
+  margin-bottom: $spacing-4;
+
+  label {
+    display: block;
+    margin-bottom: $spacing-2;
+    font-weight: 500;
+    color: #caf0f8;
+    font-size: $font-size-sm;
+    text-shadow: 0 0 8px rgba(202, 240, 248, 0.5);
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    padding: $spacing-3;
+    border: 2px solid rgba(0, 212, 255, 0.3);
+    border-radius: 16px;
+    background: rgba(0, 29, 61, 0.8);
+    color: #caf0f8;
+    font-size: $font-size-sm;
+    transition: all 0.4s ease;
+
+    &:focus {
+      outline: none;
+      border-color: #00d4ff;
+      box-shadow:
+        0 0 30px rgba(0, 212, 255, 0.4),
+        inset 0 0 25px rgba(0, 212, 255, 0.1);
+    }
+
+    &:hover {
+      border-color: rgba(0, 212, 255, 0.5);
+    }
+
+    &::placeholder {
+      color: rgba(202, 240, 248, 0.5);
+    }
+  }
+}
+
+// 布局辅助类
+.flex-center {
+  @include flex-center;
+}
+
+.text-ellipsis {
+  @include text-ellipsis;
+}
+
+// 间距辅助类
+.m-0 {
+  margin: $spacing-0;
+}
+.m-1 {
+  margin: $spacing-1;
+}
+.m-2 {
+  margin: $spacing-2;
+}
+.m-3 {
+  margin: $spacing-3;
+}
+.m-4 {
+  margin: $spacing-4;
+}
+.m-5 {
+  margin: $spacing-5;
+}
+.m-6 {
+  margin: $spacing-6;
+}
+.m-8 {
+  margin: $spacing-8;
+}
+
+.p-0 {
+  padding: $spacing-0;
+}
+.p-1 {
+  padding: $spacing-1;
+}
+.p-2 {
+  padding: $spacing-2;
+}
+.p-3 {
+  padding: $spacing-3;
+}
+.p-4 {
+  padding: $spacing-4;
+}
+.p-5 {
+  padding: $spacing-5;
+}
+.p-6 {
+  padding: $spacing-6;
+}
+.p-8 {
+  padding: $spacing-8;
+}
+
+// ==================== 全局弹窗美化样式 - 海洋科技风格 ====================
+// 弹窗遮罩层
+.ant-modal-mask {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+// 弹窗容器
+.ant-modal-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+// 统一按钮主题 - 海洋科技风格
+.ant-btn {
+  border-radius: 16px;
+  font-weight: 600;
+  padding: 0 24px;
+  height: 44px;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  border-width: 2px;
+
+  &.ant-btn-default {
+    background: linear-gradient(
+      135deg,
+      rgba(0, 29, 61, 0.92) 0%,
+      rgba(0, 29, 61, 0.88) 50%,
+      rgba(0, 29, 61, 0.84) 100%
+    );
+    border-color: rgba(0, 212, 255, 0.3);
+    color: #caf0f8;
+
+    &:hover {
+      background: rgba(0, 212, 255, 0.1);
+      border-color: rgba(0, 212, 255, 0.5);
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+    }
+  }
+
+  &.ant-btn-primary {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(72, 202, 228, 0.2));
+    border-color: #00d4ff;
+    color: #00d4ff;
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+
+    &:hover {
+      background: linear-gradient(135deg, #00d4ff, #48cae4);
+      border-color: transparent;
+      color: #001d3d;
+      transform: translateY(-2px);
+      box-shadow:
+        0 0 50px rgba(0, 212, 255, 0.7),
+        0 0 100px rgba(72, 202, 228, 0.4);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+
+  &.ant-btn-dangerous:not(.ant-btn-link) {
+    color: #ef4444;
+    border-color: rgba(239, 68, 68, 0.4);
+    background: rgba(0, 29, 61, 0.8);
+
+    &:hover {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: #ef4444;
+      color: #ef4444;
+      box-shadow: 0 0 30px rgba(239, 68, 68, 0.4);
+    }
+  }
+
+  &.ant-btn-link {
+    border-radius: 12px;
+    color: #00d4ff;
+  }
+
+  &.ant-btn-sm {
+    border-radius: 12px;
+    height: 36px;
+    padding: 0 16px;
+  }
+}
+
+// 弹窗内容 - 海洋科技风格
+.ant-modal {
+  top: 0;
+  padding-bottom: 0;
+
+  .ant-modal-content {
+    background: rgba(0, 29, 61, 0.95);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-radius: 24px;
+    border: 2px solid rgba(0, 212, 255, 0.4);
+    box-shadow:
+      0 0 60px rgba(0, 212, 255, 0.3),
+      inset 0 0 50px rgba(0, 212, 255, 0.1);
+    overflow: hidden;
+    animation: modalSlideIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  // 弹窗头部
+  .ant-modal-header {
+    background: linear-gradient(
+      135deg,
+      rgba(0, 29, 61, 0.95) 0%,
+      rgba(0, 29, 61, 0.9) 50%,
+      rgba(0, 29, 61, 0.85) 100%
+    );
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+    padding: 24px 28px;
+    border-radius: 24px 24px 0 0;
+
+    .ant-modal-title {
+      font-weight: 700;
+      color: #caf0f8;
+      font-size: 22px;
+      letter-spacing: -0.3px;
+      line-height: 1.3;
+      text-shadow: 0 0 20px rgba(202, 240, 248, 0.5);
+    }
+
+    .ant-modal-close {
+      top: 24px;
+      right: 28px;
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+      &:hover {
+        background: rgba(0, 212, 255, 0.15);
+        transform: scale(1.1);
+        box-shadow: 0 0 20px rgba(0, 212, 255, 0.4);
+      }
+
+      .ant-modal-close-x {
+        width: 36px;
+        height: 36px;
+        line-height: 36px;
+        font-size: 18px;
+        color: #90e0ef;
+        transition: color 0.2s ease;
+
+        &:hover {
+          color: #00d4ff;
+        }
+      }
+    }
+  }
+
+  // 弹窗主体
+  .ant-modal-body {
+    padding: 28px;
+    background: rgba(0, 29, 61, 0.95);
+    color: #caf0f8;
+    line-height: 1.6;
+  }
+
+  // 弹窗底部
+  .ant-modal-footer {
+    background: linear-gradient(
+      135deg,
+      rgba(0, 29, 61, 0.95) 0%,
+      rgba(0, 29, 61, 0.9) 50%,
+      rgba(0, 29, 61, 0.85) 100%
+    );
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-top: 2px solid rgba(0, 212, 255, 0.3);
+    padding: 20px 28px;
+    border-radius: 0 0 24px 24px;
+
+    .ant-btn {
+      border-radius: 16px;
+      height: 44px;
+      padding: 0 24px;
+      font-weight: 600;
+      font-size: 15px;
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      border: 2px solid rgba(0, 212, 255, 0.3);
+
+      &:not(.ant-btn-primary) {
+        background: linear-gradient(
+          135deg,
+          rgba(0, 29, 61, 0.92) 0%,
+          rgba(0, 29, 61, 0.88) 50%,
+          rgba(0, 29, 61, 0.84) 100%
+        );
+        color: #caf0f8;
+
+        &:hover {
+          background: rgba(0, 212, 255, 0.1);
+          border-color: rgba(0, 212, 255, 0.5);
+          transform: translateY(-2px);
+          box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+        }
+      }
+
+      &.ant-btn-primary {
+        background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(72, 202, 228, 0.2));
+        border-color: #00d4ff;
+        color: #00d4ff;
+        box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+
+        &:hover {
+          background: linear-gradient(135deg, #00d4ff, #48cae4);
+          border-color: transparent;
+          color: #001d3d;
+          transform: translateY(-2px);
+          box-shadow:
+            0 0 50px rgba(0, 212, 255, 0.7),
+            0 0 100px rgba(72, 202, 228, 0.4);
+        }
+
+        &:active {
+          transform: translateY(0);
+        }
+      }
+
+      &.ant-btn-dangerous {
+        color: #ef4444;
+        border-color: rgba(239, 68, 68, 0.4);
+
+        &:hover {
+          background: rgba(239, 68, 68, 0.15);
+          border-color: #ef4444;
+          color: #ef4444;
+          box-shadow: 0 0 30px rgba(239, 68, 68, 0.4);
+        }
+      }
+    }
+  }
+
+  // 表单元素美化 - 海洋科技风格
+  .ant-form-item-label > label {
+    font-weight: 600;
+    color: #caf0f8;
+    font-size: 15px;
+    letter-spacing: -0.1px;
+    text-shadow: 0 0 8px rgba(202, 240, 248, 0.5);
+  }
+
+  .ant-input,
+  .ant-select-selector,
+  .ant-input-number,
+  .ant-picker,
+  .ant-textarea,
+  .ant-tree-select-selector {
+    border-radius: 16px;
+    border: 2px solid rgba(0, 212, 255, 0.3);
+    background: rgba(0, 29, 61, 0.8);
+    color: #caf0f8;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    font-size: 15px;
+
+    &:hover {
+      border-color: rgba(0, 212, 255, 0.5);
+    }
+    &:focus,
+    &.ant-input-focused,
+    &.ant-select-focused .ant-select-selector,
+    &.ant-picker-focused {
+      border-color: #00d4ff;
+      box-shadow:
+        0 0 30px rgba(0, 212, 255, 0.4),
+        inset 0 0 25px rgba(0, 212, 255, 0.1);
+    }
+
+    &::placeholder {
+      color: rgba(202, 240, 248, 0.5);
+    }
+  }
+
+  .ant-input-number {
+    width: 100%;
+  }
+
+  .ant-radio-group {
+    .ant-radio-button-wrapper {
+      border-radius: 12px;
+      border: 2px solid rgba(0, 212, 255, 0.3);
+      background: rgba(0, 29, 61, 0.8);
+      color: #caf0f8;
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+      &:hover {
+        border-color: rgba(0, 212, 255, 0.5);
+      }
+      &.ant-radio-button-wrapper-checked {
+        background: linear-gradient(135deg, #00d4ff, #48cae4);
+        border-color: transparent;
+        color: #001d3d;
+        box-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+      }
+    }
+  }
+
+  .ant-switch {
+    background: rgba(202, 240, 248, 0.3);
+    &.ant-switch-checked {
+      background: linear-gradient(135deg, #00d4ff, #48cae4);
+      box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+    }
+  }
+
+  // 表格在弹窗中的样式 - 海洋科技风格
+  .ant-table {
+    background: transparent;
+    .ant-table-thead > tr > th {
+      background: rgba(0, 212, 255, 0.1);
+      font-weight: 700;
+      color: #caf0f8;
+      border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+      padding: 16px;
+      font-size: 14px;
+      text-shadow: 0 0 8px rgba(202, 240, 248, 0.5);
+    }
+    .ant-table-tbody > tr {
+      transition: all 0.4s ease;
+      &:hover > td {
+        background: rgba(0, 212, 255, 0.1);
+      }
+      > td {
+        padding: 16px;
+        border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+        color: #caf0f8;
+      }
+    }
+  }
+
+  // 标签样式 - 海洋科技风格
+  .ant-tag {
+    border-radius: 12px;
+    font-weight: 600;
+    padding: 4px 14px;
+    border: 2px solid currentColor;
+    background: rgba(0, 29, 61, 0.8);
+    color: #00d4ff;
+  }
+
+  // 描述列表样式 - 海洋科技风格
+  .ant-descriptions {
+    .ant-descriptions-item-label {
+      font-weight: 600;
+      color: #caf0f8;
+      background: rgba(0, 212, 255, 0.1);
+      text-shadow: 0 0 8px rgba(202, 240, 248, 0.5);
+    }
+    .ant-descriptions-item-content {
+      color: #90e0ef;
+      text-shadow: 0 0 8px rgba(144, 224, 239, 0.5);
+    }
+  }
+}
+
+// 弹窗动画
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+// 响应式优化
+@media (max-width: 768px) {
+  .ant-modal {
+    .ant-modal-content {
+      border-radius: 20px;
+    }
+    .ant-modal-header {
+      padding: 20px 20px;
+      border-radius: 20px 20px 0 0;
+      .ant-modal-title {
+        font-size: 20px;
+      }
+    }
+    .ant-modal-body {
+      padding: 20px;
+    }
+    .ant-modal-footer {
+      padding: 16px 20px;
+      border-radius: 0 0 20px 20px;
+    }
+  }
+}
