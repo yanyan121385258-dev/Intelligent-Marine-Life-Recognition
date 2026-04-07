@@ -49,8 +49,11 @@ function modelsManifestPlugin(): Plugin {
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
-  const apiBaseUrl = env.VITE_API_BASE_URL || 'http://localhost:3000'
+  const apiBaseUrl = env.VITE_API_BASE_URL || 'http://localhost:8000'
   const backendOrigin = apiBaseUrl.replace(/\/+$/, '')
+  console.log('🔧 Vite配置 - mode:', mode)
+  console.log('🔧 Vite配置 - apiBaseUrl:', apiBaseUrl)
+  console.log('🔧 Vite配置 - backendOrigin:', backendOrigin)
 
   return {
   plugins: [

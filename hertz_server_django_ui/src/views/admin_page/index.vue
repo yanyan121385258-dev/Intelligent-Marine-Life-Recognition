@@ -202,19 +202,7 @@
           </div>
         </a-layout-content>
 
-        <!-- 底部 -->
-        <a-layout-footer class="footer">
-          <div class="footer-content">
-            <span class="footer-text">Hertz Admin ©2024 Created by Hertz Team</span>
-            <div class="footer-links">
-              <a href="#" target="_blank" class="footer-link">帮助文档</a>
-              <a-divider type="vertical" class="footer-divider" />
-              <a href="#" target="_blank" class="footer-link">隐私政策</a>
-              <a-divider type="vertical" class="footer-divider" />
-              <a href="#" target="_blank" class="footer-link">服务条款</a>
-            </div>
-          </div>
-        </a-layout-footer>
+
       </a-layout>
     </a-layout>
 
