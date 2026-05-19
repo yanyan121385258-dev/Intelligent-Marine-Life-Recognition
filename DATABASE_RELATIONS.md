@@ -1,6 +1,6 @@
 # 数据库关系文档
 
-## 1. 认证模块 (hertz_studio_django_auth)
+## 1. 认证模块 (studio_django_auth)
 
 ### 1.1 表结构
 
@@ -104,7 +104,7 @@ HertzDepartment (部门表)
 4. **菜单-菜单关系**: 菜单可以有子菜单，形成树形结构（自关联）
 5. **部门-部门关系**: 部门可以有子部门，形成树形结构（自关联）
 
-## 2. 知识库模块 (hertz_studio_django_kb)
+## 2. 知识库模块 (studio_django_kb)
 
 ### 2.1 表结构
 
@@ -164,7 +164,7 @@ KBEntity (知识图谱实体表)
 3. **知识片段-知识图谱关系关系**: 一个知识片段可以关联多个知识图谱关系（一对多）
 4. **实体-知识图谱关系关系**: 实体之间可以有多个关系，一个实体可以作为源实体或目标实体（一对多）
 
-## 3. YOLO模块 (hertz_studio_django_yolo)
+## 3. YOLO模块 (studio_django_yolo)
 
 ### 3.1 表结构
 
@@ -264,7 +264,7 @@ HertzUser (用户表)
 5. **告警记录-模型类别关系**: 一个告警记录关联一个模型类别（多对一）
 6. **用户-告警记录关系**: 一个用户可以有多个告警记录（一对多）
 
-## 4. 通知模块 (hertz_studio_django_notice)
+## 4. 通知模块 (studio_django_notice)
 
 ### 4.1 表结构
 
@@ -351,7 +351,7 @@ KBEntity (知识图谱实体表)
 ### 6.1 获取用户的所有角色
 
 ```python
-from hertz_studio_django_auth.models import HertzUser
+from studio_django_auth.models import HertzUser
 
 user = HertzUser.objects.get(username='test_user')
 roles = user.roles.all()  # 通过@property方法获取
@@ -360,7 +360,7 @@ roles = user.roles.all()  # 通过@property方法获取
 ### 6.2 获取角色的所有菜单
 
 ```python
-from hertz_studio_django_auth.models import HertzRole
+from studio_django_auth.models import HertzRole
 
 role = HertzRole.objects.get(role_code='admin')
 menus = role.menus.all()  # 通过@property方法获取
@@ -369,8 +369,8 @@ menus = role.menus.all()  # 通过@property方法获取
 ### 6.3 获取用户的检测记录
 
 ```python
-from hertz_studio_django_auth.models import HertzUser
-from hertz_studio_django_yolo.models import DetectionRecord
+from studio_django_auth.models import HertzUser
+from studio_django_yolo.models import DetectionRecord
 
 user = HertzUser.objects.get(username='test_user')
 detection_records = user.detection_records.all()
@@ -379,8 +379,8 @@ detection_records = user.detection_records.all()
 ### 6.4 获取用户的告警记录
 
 ```python
-from hertz_studio_django_auth.models import HertzUser
-from hertz_studio_django_yolo.models import Alert
+from studio_django_auth.models import HertzUser
+from studio_django_yolo.models import Alert
 
 user = HertzUser.objects.get(username='test_user')
 alerts = user.alerts.all()
@@ -389,7 +389,7 @@ alerts = user.alerts.all()
 ### 6.5 获取用户的通知
 
 ```python
-from hertz_studio_django_auth.models import HertzUser
+from studio_django_auth.models import HertzUser
 
 user = HertzUser.objects.get(username='test_user')
 user_notices = user.user_notices.all()
@@ -399,7 +399,7 @@ unread_notices = user.user_notices.filter(is_read=False)
 ### 6.6 获取知识库条目及其片段
 
 ```python
-from hertz_studio_django_kb.models import KBItem
+from studio_django_kb.models import KBItem
 
 item = KBItem.objects.get(id=1)
 chunks = item.chunks.all()
@@ -408,7 +408,7 @@ chunks = item.chunks.all()
 ### 6.7 获取模型的类别
 
 ```python
-from hertz_studio_django_yolo.models import YoloModel
+from studio_django_yolo.models import YoloModel
 
 model = YoloModel.objects.get(id=1)
 categories = model.model_categories.all()
@@ -418,69 +418,69 @@ categories = model.model_categories.all()
 
 ### 7.1 认证模块索引
 
-- `hertz_auth_user`: (username), (email)
-- `hertz_auth_role`: (role_name), (role_code)
-- `hertz_auth_menu`: (menu_code), (parent_id), (sort_order)
-- `hertz_auth_department`: (dept_code), (parent_id), (sort_order)
-- `hertz_auth_user_role`: (user, role) - 唯一索引
-- `hertz_auth_role_menu`: (role, menu) - 唯一索引
+- `auth_user`: (username), (email)
+- `auth_role`: (role_name), (role_code)
+- `auth_menu`: (menu_code), (parent_id), (sort_order)
+- `auth_department`: (dept_code), (parent_id), (sort_order)
+- `auth_user_role`: (user, role) - 唯一索引
+- `auth_role_menu`: (role, menu) - 唯一索引
 
 ### 7.2 知识库模块索引
 
-- `hertz_kb_item`: (user), (created_at), (updated_at)
-- `hertz_kb_chunk`: (item_id, index)
-- `hertz_kb_entity`: (name), (type)
-- `hertz_kb_relation`: (relation_type)
+- `kb_item`: (user), (created_at), (updated_at)
+- `kb_chunk`: (item_id, index)
+- `kb_entity`: (name), (type)
+- `kb_relation`: (relation_type)
 
 ### 7.3 YOLO模块索引
 
-- `hertz_yolo_dataset`: (created_at)
-- `hertz_yolo_yolo_model`: (created_at)
-- `hertz_yolo_detection_record`: (created_at)
-- `hertz_yolo_model_category`: (model, category_id) - 唯一索引
-- `hertz_yolo_alert_record`: (alert_level, created_at)
+- `yolo_dataset`: (created_at)
+- `yolo_yolo_model`: (created_at)
+- `yolo_detection_record`: (created_at)
+- `yolo_model_category`: (model, category_id) - 唯一索引
+- `yolo_alert_record`: (alert_level, created_at)
 
 ### 7.4 通知模块索引
 
-- `hertz_notice_notice`: (status, publish_time), (notice_type, status), (is_top, priority)
-- `hertz_notice_user_notice`: (user, notice) - 唯一索引, (user, is_read), (user, is_starred), (notice, is_read)
+- `notice_notice`: (status, publish_time), (notice_type, status), (is_top, priority)
+- `notice_user_notice`: (user, notice) - 唯一索引, (user, is_read), (user, is_starred), (notice, is_read)
 
 ## 8. 数据库约束
 
 ### 8.1 唯一约束
 
-- `hertz_auth_user`: username, email
-- `hertz_auth_role`: role_name, role_code
-- `hertz_auth_menu`: menu_code
-- `hertz_auth_department`: dept_code
-- `hertz_auth_user_role`: (user, role)
-- `hertz_auth_role_menu`: (role, menu)
-- `hertz_yolo_model_category`: (model, category_id)
-- `hertz_notice_user_notice`: (user, notice)
+- `auth_user`: username, email
+- `auth_role`: role_name, role_code
+- `auth_menu`: menu_code
+- `auth_department`: dept_code
+- `auth_user_role`: (user, role)
+- `auth_role_menu`: (role, menu)
+- `yolo_model_category`: (model, category_id)
+- `notice_user_notice`: (user, notice)
 
 ### 8.2 外键约束
 
-- `hertz_auth_user.department_id` → `hertz_auth_department.dept_id`
-- `hertz_auth_menu.parent_id` → `hertz_auth_menu.menu_id`
-- `hertz_auth_department.parent_id` → `hertz_auth_department.dept_id`
-- `hertz_auth_user_role.user` → `hertz_auth_user.user_id`
-- `hertz_auth_user_role.role` → `hertz_auth_role.role_id`
-- `hertz_auth_role_menu.role` → `hertz_auth_role.role_id`
-- `hertz_auth_role_menu.menu` → `hertz_auth_menu.menu_id`
-- `hertz_kb_item.user` → `hertz_auth_user.user_id`
-- `hertz_kb_chunk.item` → `hertz_kb_item.id`
-- `hertz_kb_relation.source` → `hertz_kb_entity.id`
-- `hertz_kb_relation.target` → `hertz_kb_entity.id`
-- `hertz_kb_relation.source_chunk` → `hertz_kb_chunk.id`
-- `hertz_yolo_detection_record.model` → `hertz_yolo_yolo_model.id`
-- `hertz_yolo_detection_record.user` → `hertz_auth_user.user_id`
-- `hertz_yolo_model_category.model` → `hertz_yolo_yolo_model.id`
-- `hertz_yolo_alert_record.detection_record` → `hertz_yolo_detection_record.id`
-- `hertz_yolo_alert_record.user` → `hertz_auth_user.user_id`
-- `hertz_yolo_alert_record.category` → `hertz_yolo_model_category.id`
-- `hertz_notice_notice.publisher` → `hertz_auth_user.user_id`
-- `hertz_notice_user_notice.user` → `hertz_auth_user.user_id`
-- `hertz_notice_user_notice.notice` → `hertz_notice_notice.notice_id`
+- `auth_user.department_id` → `auth_department.dept_id`
+- `auth_menu.parent_id` → `auth_menu.menu_id`
+- `auth_department.parent_id` → `auth_department.dept_id`
+- `auth_user_role.user` → `auth_user.user_id`
+- `auth_user_role.role` → `auth_role.role_id`
+- `auth_role_menu.role` → `auth_role.role_id`
+- `auth_role_menu.menu` → `auth_menu.menu_id`
+- `kb_item.user` → `auth_user.user_id`
+- `kb_chunk.item` → `kb_item.id`
+- `kb_relation.source` → `kb_entity.id`
+- `kb_relation.target` → `kb_entity.id`
+- `kb_relation.source_chunk` → `kb_chunk.id`
+- `yolo_detection_record.model` → `yolo_yolo_model.id`
+- `yolo_detection_record.user` → `auth_user.user_id`
+- `yolo_model_category.model` → `yolo_yolo_model.id`
+- `yolo_alert_record.detection_record` → `yolo_detection_record.id`
+- `yolo_alert_record.user` → `auth_user.user_id`
+- `yolo_alert_record.category` → `yolo_model_category.id`
+- `notice_notice.publisher` → `auth_user.user_id`
+- `notice_user_notice.user` → `auth_user.user_id`
+- `notice_user_notice.notice` → `notice_notice.notice_id`
 
 ## 9. 数据库迁移
 
@@ -548,7 +548,7 @@ python manage.py loaddata backup.json
 ### 11.3 备份特定应用
 
 ```bash
-python manage.py dumpdata hertz_studio_django_auth > auth_backup.json
+python manage.py dumpdata studio_django_auth > auth_backup.json
 ```
 
 ## 12. 常见问题

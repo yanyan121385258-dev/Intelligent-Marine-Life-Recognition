@@ -9,13 +9,13 @@ if %errorlevel% neq 0 (
     exit /b 1
 )
 
-if not exist "hertz_server_django_ui" (
+if not exist "server_django_ui" (
     echo ERROR: Project directory missing
     pause
     exit /b 1
 )
 
-cd hertz_server_django_ui
+cd server_django_ui
 echo Installing dependencies...
 npm install
 if %errorlevel% neq 0 (

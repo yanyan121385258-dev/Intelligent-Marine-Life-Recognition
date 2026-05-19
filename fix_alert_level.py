@@ -1,7 +1,7 @@
 import re
 
 def fix_alert_level_management():
-    file_path = r'd:\hertz_django\hertz_server_django_ui\src\views\admin_page\AlertLevelManagement.vue'
+    file_path = r'd:\django\server_django_ui\src\views\admin_page\AlertLevelManagement.vue'
     
     with open(file_path, 'r', encoding='utf-8') as f:
         content = f.read()

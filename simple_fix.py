@@ -76,4 +76,4 @@ def simple_fix(file_path):
     print("简单修复完成！")
 
 if __name__ == '__main__':
-    simple_fix(r'd:\hertz_django\hertz_server_django_ui\src\views\user
+    simple_fix(r'd:\django\server_django_ui\src\views\user

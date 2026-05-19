@@ -72,4 +72,4 @@ def check_tags(file_path):
             print(f"  <{tag}> 在第{line}行")
 
 if __name__ == '__main__':
-    check_tags(r'd:\hertz_django\hertz_server_django_ui\src\views\user_pages\index.vue')
+    check_tags(r'd:\django\server_django_ui\src\views\user_pages\index.vue')

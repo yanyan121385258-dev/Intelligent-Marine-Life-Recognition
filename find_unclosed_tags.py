@@ -60,4 +60,4 @@ def find_unclosed_tags(file_path):
         print("\n所有标签都已正确闭合!")
 
 if __name__ == '__main__':
-    find_unclosed_tags(r'd:\hertz_django\hertz_server_django_ui\src\views\user_pages\index.vue')
+    find_unclosed_tags(r'd:\django\server_django_ui\src\views\user_pages\index.vue')

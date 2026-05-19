@@ -10,8 +10,8 @@
     "data": {}
   }
   ```
-- 路由挂载: 项目主路由通过 `path('api/ai/', include('hertz_studio_django_ai.urls'))` 挂载（`hertz_server_django/urls.py:23`）。
-- 认证说明: 所有接口需在请求头携带 `Authorization: Bearer <access_token>`（`hertz_studio_django_ai/views.py:34` 使用 `login_required`）。
+- 路由挂载: 项目主路由通过 `path('api/ai/', include('studio_django_ai.urls'))` 挂载（`server_django/urls.py:23`）。
+- 认证说明: 所有接口需在请求头携带 `Authorization: Bearer <access_token>`（`studio_django_ai/views.py:34` 使用 `login_required`）。
 
 ## 接口列表
 
@@ -22,7 +22,7 @@
   - `query` 可选，按标题模糊搜索
   - `page` 可选，默认 `1`
   - `page_size` 可选，默认 `10`
-- 实现: `AIChatListView.get`（`hertz_studio_django_ai/views.py:36`）
+- 实现: `AIChatListView.get`（`studio_django_ai/views.py:36`）
 - 请求示例:
   ```http
   GET /api/ai/chats/?query=Python&page=1&page_size=10
@@ -56,7 +56,7 @@
 - 路径: `/api/ai/chats/create/`
 - 请求体: `application/json`
 - 字段: `title` 可选，默认 `"新对话"`
-- 实现: `AIChatCreateView.post`（`hertz_studio_django_ai/views.py:100`）
+- 实现: `AIChatCreateView.post`（`studio_django_ai/views.py:100`）
 - 请求示例:
   ```http
   POST /api/ai/chats/create/
@@ -84,7 +84,7 @@
 - 方法: `GET`
 - 路径: `/api/ai/chats/{chat_id}/`
 - 路径参数: `chat_id` 聊天ID（整数）
-- 实现: `AIChatDetailView.get`（`hertz_studio_django_ai/views.py:137`）
+- 实现: `AIChatDetailView.get`（`studio_django_ai/views.py:137`）
 - 请求示例:
   ```http
   GET /api/ai/chats/1/
@@ -125,7 +125,7 @@
 - 路径参数: `chat_id` 聊天ID（整数）
 - 请求体: `application/json`
 - 字段: `title` 新标题
-- 实现: `AIChatUpdateView.put`（`hertz_studio_django_ai/views.py:192`）
+- 实现: `AIChatUpdateView.put`（`studio_django_ai/views.py:192`）
 - 请求示例:
   ```http
   PUT /api/ai/chats/1/update/
@@ -151,7 +151,7 @@
 - 路径: `/api/ai/chats/delete/`
 - 请求体: `application/json`
 - 字段: `chat_ids` 要删除的聊天ID数组（整数）
-- 实现: `AIChatDeleteView.post`（`hertz_studio_django_ai/views.py:231`）
+- 实现: `AIChatDeleteView.post`（`studio_django_ai/views.py:231`）
 - 请求示例:
   ```http
   POST /api/ai/chats/delete/
@@ -178,7 +178,7 @@
 - 路径参数: `chat_id` 聊天ID（整数）
 - 请求体: `application/json`
 - 字段: `content` 必填，消息内容，不能为空
-- 实现: `AIChatSendMessageView.post`（`hertz_studio_django_ai/views.py:280`）
+- 实现: `AIChatSendMessageView.post`（`studio_django_ai/views.py:280`）
 - 请求示例:
   ```http
   POST /api/ai/chats/1/send/
@@ -242,5 +242,5 @@
   ```
 
 ## 附注
-- 列表与详情时间字段为字符串格式 `YYYY-MM-DD HH:mm:ss`（`hertz_studio_django_ai/views.py:65`、`hertz_studio_django_ai/views.py:151`）。
-- AI模型名称由配置项 `settings.AI_MODEL_NAME` 控制，默认 `deepseek-r1:1.5b`（`hertz_studio_django_ai/views.py:263`）。
+- 列表与详情时间字段为字符串格式 `YYYY-MM-DD HH:mm:ss`（`studio_django_ai/views.py:65`、`studio_django_ai/views.py:151`）。
+- AI模型名称由配置项 `settings.AI_MODEL_NAME` 控制，默认 `deepseek-r1:1.5b`（`studio_django_ai/views.py:263`）。

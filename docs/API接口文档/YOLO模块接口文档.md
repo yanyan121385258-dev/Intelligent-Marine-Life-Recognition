@@ -10,8 +10,8 @@
     "data": {}
   }
   ```
-  参考 `hertz_studio_django_utils/responses/HertzResponse.py`
-- 认证说明: 标注“需要登录”的接口需在请求头携带 `Authorization: Bearer <token>`，验证逻辑参考 `hertz_studio_django_auth/utils/decorators/auth_decorators.py`。
+  参考 `studio_django_utils/responses/HertzResponse.py`
+- 认证说明: 标注“需要登录”的接口需在请求头携带 `Authorization: Bearer <token>`，验证逻辑参考 `studio_django_auth/utils/decorators/auth_decorators.py`。
 
 
 ## 一、模型上传与转换
@@ -27,7 +27,7 @@
   - `name`: 模型名称（必填）
   - `version`: 模型版本（默认 `1.0`）
   - `description`: 模型描述（可选）
-- 参考实现: `views.py` 中 `model_upload`，`_handle_zip_upload`，`_handle_folder_upload`，`_validate_and_create_model`（d:\All_template\yolo\hertz_studio_django_yolo\views.py:1018,1058,1129,1182）
+- 参考实现: `views.py` 中 `model_upload`，`_handle_zip_upload`，`_handle_folder_upload`，`_validate_and_create_model`（d:\All_template\yolo\studio_django_yolo\views.py:1018,1058,1129,1182）
 - 示例请求（ZIP 上传）:
   ```bash
   curl -X POST "http://localhost:8000/api/yolo/upload/" \
@@ -67,7 +67,7 @@
   - `imgsz`: 导出图像尺寸（如 `640` 或 `640,640`，默认 `640`）
   - `opset`: ONNX opset 版本（默认 `12`）
   - `simplify`: 是否简化 ONNX（`true/false`，默认 `false`）
-- 参考实现: `views.py` 中 `upload_pt_convert_onnx`（d:\All_template\yolo\hertz_studio_django_yolo\views.py:877）
+- 参考实现: `views.py` 中 `upload_pt_convert_onnx`（d:\All_template\yolo\studio_django_yolo\views.py:877）
 - 示例请求:
   ```bash
   curl -X POST "http://localhost:8000/api/yolo/onnx/upload/" \
@@ -98,7 +98,7 @@
 - 方法: `GET`
 - 路径: `/api/yolo/models/`
 - 认证: 不需要
-- 参考实现: `model_list`（d:\All_template\yolo\hertz_studio_django_yolo\views.py:101）
+- 参考实现: `model_list`（d:\All_template\yolo\studio_django_yolo\views.py:101）
 - 示例响应:
   ```json
   {
@@ -115,7 +115,7 @@
 - 方法: `GET`
 - 路径: `/api/yolo/models/{pk}/`
 - 认证: 不需要
-- 参考实现: `model_detail`（d:\All_template\yolo\hertz_studio_django_yolo\views.py:121）
+- 参考实现: `model_detail`（d:\All_template\yolo\studio_django_yolo\views.py:121）
 - 示例响应（节选）:
   ```json
   {
@@ -145,7 +145,7 @@
 - 认证: 不需要
 - 请求类型: `application/json` 或 `multipart/form-data`
 - 可更新字段: `description`, `is_enabled`,（如上传 `model_file` 必须为 `.pt`）
-- 参考实现: `model_update`（d:\All_template\yolo\hertz_studio_django_yolo\views.py:134）
+- 参考实现: `model_update`（d:\All_template\yolo\studio_django_yolo\views.py:134）
 - 示例请求（PATCH）:
   ```http
   PATCH /api/yolo/models/1/update/
@@ -165,7 +165,7 @@
 - 方法: `DELETE`
 - 路径: `/api/yolo/models/{pk}/delete/`
 - 认证: 不需要
-- 参考实现: `model_delete`（d:\All_template\yolo\hertz_studio_django_yolo\views.py:152）
+- 参考实现: `model_delete`（d:\All_template\yolo\studio_django_yolo\views.py:152）
 - 示例响应:
   ```json
   {"success": true, "code": 200, "message": "模型删除成功"}
@@ -176,7 +176,7 @@
 - 路径: `/api/yolo/models/{pk}/enable/`
 - 认证: 不需要
 - 行为: 先禁用其他模型，再启用当前模型
-- 参考实现: `model_enable`（d:\All_template\yolo\hertz_studio_django_yolo\views.py:165）
+- 参考实现: `model_enable`（d:\All_template\yolo\studio_django_yolo\views.py:165）
 - 示例响应:
   ```json
   {"success": true, "code": 200, "message": "模型 ModelA 已启用", "data": {"id": 1, "is_enabled": true}}
@@ -186,7 +186,7 @@
 - 方法: `GET`
 - 路径: `/api/yolo/models/enabled/`
 - 认证: 不需要
-- 参考实现: `model_enabled`（d:\All_template\yolo\hertz_studio_django_yolo\views.py:186）
+- 参考实现: `model_enabled`（d:\All_template\yolo\studio_django_yolo\views.py:186）
 - 示例响应:
   ```json
   {"success": true, "code": 200, "message": "获取启用模型成功", "data": {"id": 1, "name": "ModelA"}}
@@ -196,7 +196,7 @@
 - 方法: `POST`
 - 路径: `/api/yolo/models/create/`
 - 说明: 返回 405，提示使用 `/api/yolo/upload/`
-- 参考实现: `model_create`（d:\All_template\yolo\hertz_studio_django_yolo\views.py:114）
+- 参考实现: `model_create`（d:\All_template\yolo\studio_django_yolo\views.py:114）
 
 
 ## 三、模型类别管理
@@ -207,13 +207,13 @@
 - 方法: `GET`
 - 路径: `/api/yolo/categories/`
 - 认证: 不需要
-- 参考实现: `category_list`（d:\All_template\yolo\hertz_studio_django_yolo\views.py:1301）
+- 参考实现: `category_list`（d:\All_template\yolo\studio_django_yolo\views.py:1301）
 
 ### （2）获取类别详情
 - 方法: `GET`
 - 路径: `/api/yolo/categories/{pk}/`
 - 认证: 不需要
-- 参考实现: `category_detail`（d:\All_template\yolo\hertz_studio_django_yolo\views.py:1329）
+- 参考实现: `category_detail`（d:\All_template\yolo\studio_django_yolo\views.py:1329）
 
 ### （3）更新类别
 - 方法: `PUT` 或 `PATCH`
@@ -221,7 +221,7 @@
 - 认证: 不需要
 - 请求类型: `application/json`
 - 可更新字段: `alias`, `alert_level`（`high|medium|low|none`）, `is_active`
-- 参考实现: `category_update`（d:\All_template\yolo\hertz_studio_django_yolo\views.py:1342）
+- 参考实现: `category_update`（d:\All_template\yolo\studio_django_yolo\views.py:1342）
 - 示例请求（PATCH）:
   ```http
   PATCH /api/yolo/categories/10/update/
@@ -238,7 +238,7 @@
 - 方法: `POST`
 - 路径: `/api/yolo/categories/{pk}/toggle-status/`
 - 认证: 不需要
-- 参考实现: `category_toggle_status`（d:\All_template\yolo\hertz_studio_django_yolo\views.py:1385）
+- 参考实现: `category_toggle_status`（d:\All_template\yolo\studio_django_yolo\views.py:1385）
 - 示例响应:
   ```json
   {"success": true, "code": 200, "message": "类别 'person' 启用成功", "data": {"is_active": true}}
@@ -248,20 +248,20 @@
 - 方法: `GET`
 - 路径: `/api/yolo/categories/active/`
 - 认证: 不需要
-- 参考实现: `category_active_list`（d:\All_template\yolo\hertz_studio_django_yolo\views.py:1405）
+- 参考实现: `category_active_list`（d:\All_template\yolo\studio_django_yolo\views.py:1405）
 
 ### （6）创建类别（不推荐）
 - 方法: `POST`
 - 路径: `/api/yolo/categories/create/`
 - 认证: 不需要
 - 请求类型: `application/json`
-- 参考实现: `category_create`（d:\All_template\yolo\hertz_studio_django_yolo\views.py:1312）
+- 参考实现: `category_create`（d:\All_template\yolo\studio_django_yolo\views.py:1312）
 
 ### （7）删除类别（不推荐）
 - 方法: `DELETE`
 - 路径: `/api/yolo/categories/{pk}/delete/`
 - 认证: 不需要
-- 参考实现: `category_delete`（d:\All_template\yolo\hertz_studio_django_yolo\views.py:1362）
+- 参考实现: `category_delete`（d:\All_template\yolo\studio_django_yolo\views.py:1362）
 
 
 ## 四、目标检测
@@ -275,7 +275,7 @@
   - `file`: 要检测的图片或视频文件（支持图片：`.jpg,.jpeg,.png,.bmp,.tiff,.webp`；视频：`.mp4,.avi,.mov,.mkv,.wmv,.flv`）
   - `model_id`: 指定模型ID（可选，未提供则使用当前启用模型）
   - `confidence_threshold`: 置信度阈值（默认 `0.5`，范围 `0.1-1.0`）
-- 参考实现: `yolo_detection`（d:\All_template\yolo\hertz_studio_django_yolo\views.py:446）
+- 参考实现: `yolo_detection`（d:\All_template\yolo\studio_django_yolo\views.py:446）
 - 示例请求:
   ```bash
   curl -X POST "http://localhost:8000/api/yolo/detect/" \
@@ -319,7 +319,7 @@
   - `type`: `image` 或 `video`
   - `model_id`: 模型ID
   - `user_id`: 用户ID
-- 参考实现: `detection_list`（d:\All_template\yolo\hertz_studio_django_yolo\views.py:204）
+- 参考实现: `detection_list`（d:\All_template\yolo\studio_django_yolo\views.py:204）
 - 示例响应（节选）:
   ```json
   {
@@ -353,20 +353,20 @@
 - 路径: `/api/yolo/detections/{user_id}/user/`
 - 认证: 不需要
 - 查询参数同上
-- 参考实现: `user_detection_records`（d:\AllTemplate\yolo\hertz_studio_django_yolo\views.py:231）
+- 参考实现: `user_detection_records`（d:\AllTemplate\yolo\studio_django_yolo\views.py:231）
 
 ### （3）获取检测记录详情
 - 方法: `GET`
 - 路径: `/api/yolo/detections/{pk}/`
 - 认证: 不需要
-- 参考实现: `detection_detail`（d:\AllTemplate\yolo\hertz_studio_django_yolo\views.py:253）
+- 参考实现: `detection_detail`（d:\AllTemplate\yolo\studio_django_yolo\views.py:253）
 
 ### （4）删除检测记录
 - 方法: `DELETE`
 - 路径: `/api/yolo/detections/{pk}/delete/`
 - 认证: 不需要
 - 行为: 同时删除其关联的原始文件、结果文件及关联的告警
-- 参考实现: `detection_delete`（d:\AllTemplate\yolo\hertz_studio_django_yolo\views.py:265）
+- 参考实现: `detection_delete`（d:\AllTemplate\yolo\studio_django_yolo\views.py:265）
 - 示例响应:
   ```json
   {"success": true, "code": 200, "message": "检测记录删除成功"}
@@ -381,7 +381,7 @@
   ```json
   {"ids": [1001, 1002, 1003]}
   ```
-- 参考实现: `detection_batch_delete`（d:\AllTemplate\yolo\hertz_studio_django_yolo\views.py:299）
+- 参考实现: `detection_batch_delete`（d:\AllTemplate\yolo\studio_django_yolo\views.py:299）
 - 示例响应:
   ```json
   {
@@ -400,7 +400,7 @@
 - 方法: `GET`
 - 路径: `/api/yolo/stats/`
 - 认证: 不需要
-- 参考实现: `detection_stats`（d:\AllTemplate\yolo\hertz_studio_django_yolo\views.py:840）
+- 参考实现: `detection_stats`（d:\AllTemplate\yolo\studio_django_yolo\views.py:840）
 
 
 ## 六、告警记录
@@ -414,7 +414,7 @@
   - `level`: 告警等级（`high|medium|low|none`）
   - `user_id`: 用户ID
   - `alter_category`: 告警类别关键字（注意字段名为 `alter_category`）
-- 参考实现: `alert_list`（d:\AllTemplate\yolo\hertz_studio_django_yolo\views.py:358）
+- 参考实现: `alert_list`（d:\AllTemplate\yolo\studio_django_yolo\views.py:358）
 
 ### （2）获取用户的告警记录
 - 方法: `GET`
@@ -424,7 +424,7 @@
   - `status`: `pending|is_confirm|false_positive|all`
   - `level`: `high|medium|low|none`
   - `category`: 类别关键字
-- 参考实现: `user_alert_records`（d:\AllTemplate\yolo\hertz_studio_django_yolo\views.py:391）
+- 参考实现: `user_alert_records`（d:\AllTemplate\yolo\studio_django_yolo\views.py:391）
 
 ### （3）更新告警状态
 - 方法: `PUT` 或 `PATCH`
@@ -436,7 +436,7 @@
   {"status": "is_confirm"}
   ```
 - 可选值: `pending`, `is_confirm`, `false_positive`
-- 参考实现: `alert_update_status`（d:\AllTemplate\yolo\hertz_studio_django_yolo\views.py:426）
+- 参考实现: `alert_update_status`（d:\AllTemplate\yolo\studio_django_yolo\views.py:426）
 - 示例响应:
   ```json
   {
@@ -456,6 +456,6 @@
 
 ## 七、备注
 - 所有文件型字段响应通常包含可直接访问的媒体 URL，媒体服务由 `MEDIA_URL=/media/` 提供。
-- 分类的告警等级枚举参考 `ModelCategory.ALERT_LEVELS` 与 `Alert.ALERT_LEVELS`（d:\AllTemplate\yolo\hertz_studio_django_yolo\models.py:118,153）。
-- 检测请求的文件大小限制：图片 ≤ 50MB，视频 ≤ 500MB（d:\AllTemplate\yolo\hertz_studio_django_yolo\serializers.py:99）。
+- 分类的告警等级枚举参考 `ModelCategory.ALERT_LEVELS` 与 `Alert.ALERT_LEVELS`（d:\AllTemplate\yolo\studio_django_yolo\models.py:118,153）。
+- 检测请求的文件大小限制：图片 ≤ 50MB，视频 ≤ 500MB（d:\AllTemplate\yolo\studio_django_yolo\serializers.py:99）。
 

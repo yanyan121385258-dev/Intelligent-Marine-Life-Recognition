@@ -110,4 +110,4 @@ def fix_duplicate_tags(file_path):
     print("标签修复完成！原文件已备份为 .bak2")
 
 if __name__ == '__main__':
-    fix_duplicate_tags(r'd:\hertz_django\hertz_server_django_ui\src\views\user_pages\index.vue')
+    fix_duplicate_tags(r'd:\django\server_django_ui\src\views\user_pages\index.vue')

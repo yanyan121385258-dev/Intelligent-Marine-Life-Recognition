@@ -1,7 +1,7 @@
 # Hertz Studio Django Wiki 接口文档
 
 - 基础路径: `/api/wiki/`
-- 统一响应: 使用 `HertzResponse`，结构如下（参考 `hertz_studio_django_utils/responses/HertzResponse.py`）
+- 统一响应: 使用 `HertzResponse`，结构如下（参考 `studio_django_utils/responses/HertzResponse.py`）
   ```json
   {
     "success": true,
@@ -10,8 +10,8 @@
     "data": {}
   }
   ```
-- 路由挂载: 项目主路由中已通过 `path('api/wiki/', include('hertz_studio_django_wiki.urls'))` 挂载（`hertz_server_django/urls.py:29`）。
-- 认证说明: 标注“需要登录”的接口需在请求头携带 `Authorization: Bearer <token>`（`hertz_studio_django_auth/utils/decorators/auth_decorators.py:1`）。
+- 路由挂载: 项目主路由中已通过 `path('api/wiki/', include('studio_django_wiki.urls'))` 挂载（`server_django/urls.py:29`）。
+- 认证说明: 标注“需要登录”的接口需在请求头携带 `Authorization: Bearer <token>`（`studio_django_auth/utils/decorators/auth_decorators.py:1`）。
 
 
 ## 一、知识分类管理
@@ -26,7 +26,7 @@
   - `name`: 分类名称关键字
   - `parent_id`: 父分类ID（`0` 表示顶级）
   - `is_active`: `true/false`
-- 实现: `wiki_category_list`（`hertz_studio_django_wiki/views.py:41`）
+- 实现: `wiki_category_list`（`studio_django_wiki/views.py:41`）
 - 请求示例:
   ```bash
   curl "http://localhost:8000/api/wiki/categories/?page=1&page_size=10&name=技术"
@@ -65,7 +65,7 @@
 - 方法: `GET`
 - 路径: `/api/wiki/categories/tree/`
 - 认证: 不需要
-- 实现: `wiki_category_tree`（`hertz_studio_django_wiki/views.py:101`）
+- 实现: `wiki_category_tree`（`studio_django_wiki/views.py:101`）
 - 请求示例:
   ```bash
   curl "http://localhost:8000/api/wiki/categories/tree/"
@@ -93,7 +93,7 @@
 - 认证: 不需要
 - 请求体: `application/json`
 - 字段: `name`, `description`, `parent`, `sort_order`, `is_active`
-- 实现: `wiki_category_create`（`hertz_studio_django_wiki/views.py:136`）
+- 实现: `wiki_category_create`（`studio_django_wiki/views.py:136`）
 - 请求示例:
   ```http
   POST /api/wiki/categories/create/
@@ -134,7 +134,7 @@
 - 方法: `GET`
 - 路径: `/api/wiki/categories/{category_id}/`
 - 认证: 不需要
-- 实现: `wiki_category_detail`（`hertz_studio_django_wiki/views.py:178`）
+- 实现: `wiki_category_detail`（`studio_django_wiki/views.py:178`）
 - 请求示例:
   ```bash
   curl "http://localhost:8000/api/wiki/categories/1/"
@@ -147,7 +147,7 @@
 - 认证: 不需要
 - 请求体: `application/json`
 - 可更新字段: `name`, `description`, `parent`, `sort_order`, `is_active`
-- 实现: `wiki_category_update`（`hertz_studio_django_wiki/views.py:220`）
+- 实现: `wiki_category_update`（`studio_django_wiki/views.py:220`）
 - 请求示例:
   ```http
   PUT /api/wiki/categories/1/update/
@@ -169,7 +169,7 @@
 - 路径: `/api/wiki/categories/{category_id}/delete/`
 - 认证: 不需要
 - 行为: 软删除（将 `is_active=false`）；若存在子分类或文章将返回错误
-- 实现: `wiki_category_delete`（`hertz_studio_django_wiki/views.py:270`）
+- 实现: `wiki_category_delete`（`studio_django_wiki/views.py:270`）
 - 请求示例:
   ```bash
   curl -X DELETE "http://localhost:8000/api/wiki/categories/1/delete/"
@@ -192,7 +192,7 @@
   - `category_id`: 分类ID
   - `author_id`: 作者ID
   - `status`: `draft|published|archived`
-- 实现: `wiki_article_list`（`hertz_studio_django_wiki/views.py:318`）
+- 实现: `wiki_article_list`（`studio_django_wiki/views.py:318`）
 - 请求示例:
   ```bash
   curl "http://localhost:8000/api/wiki/articles/?page=1&page_size=10&category_id=1&status=published"
@@ -233,7 +233,7 @@
 - 认证: 需要登录（`Authorization: Bearer <token>`）
 - 请求体: `application/json`
 - 字段: `title`, `content`, `summary`, `image`, `category`, `status`, `tags`, `sort_order`
-- 实现: `wiki_article_create`（`hertz_studio_django_wiki/views.py:384`）
+- 实现: `wiki_article_create`（`studio_django_wiki/views.py:384`）
 - 请求示例:
   ```http
   POST /api/wiki/articles/create/
@@ -285,7 +285,7 @@
 - 路径: `/api/wiki/articles/{article_id}/`
 - 认证: 不需要
 - 行为: 获取详情并增加浏览量
-- 实现: `wiki_article_detail`（`hertz_studio_django_wiki/views.py:426`）
+- 实现: `wiki_article_detail`（`studio_django_wiki/views.py:426`）
 - 请求示例:
   ```bash
   curl "http://localhost:8000/api/wiki/articles/102/"
@@ -298,7 +298,7 @@
 - 认证: 不需要
 - 请求体: `application/json`
 - 可更新字段: `title`, `content`, `summary`, `image`, `category`, `status`, `tags`, `sort_order`
-- 实现: `wiki_article_update`（`hertz_studio_django_wiki/views.py:472`）
+- 实现: `wiki_article_update`（`studio_django_wiki/views.py:472`）
 - 请求示例:
   ```http
   PUT /api/wiki/articles/102/update/
@@ -318,7 +318,7 @@
 - 方法: `DELETE`
 - 路径: `/api/wiki/articles/{article_id}/delete/`
 - 认证: 不需要
-- 实现: `wiki_article_delete`（`hertz_studio_django_wiki/views.py:518`）
+- 实现: `wiki_article_delete`（`studio_django_wiki/views.py:518`）
 - 请求示例:
   ```bash
   curl -X DELETE "http://localhost:8000/api/wiki/articles/102/delete/"
@@ -332,7 +332,7 @@
 - 方法: `POST`
 - 路径: `/api/wiki/articles/{article_id}/publish/`
 - 认证: 不需要
-- 实现: `wiki_article_publish`（`hertz_studio_django_wiki/views.py:561`）
+- 实现: `wiki_article_publish`（`studio_django_wiki/views.py:561`）
 - 请求示例:
   ```bash
   curl -X POST "http://localhost:8000/api/wiki/articles/102/publish/"
@@ -350,7 +350,7 @@
 - 方法: `POST`
 - 路径: `/api/wiki/articles/{article_id}/archive/`
 - 认证: 不需要
-- 实现: `wiki_article_archive`（`hertz_studio_django_wiki/views.py:609`）
+- 实现: `wiki_article_archive`（`studio_django_wiki/views.py:609`）
 - 请求示例:
   ```bash
   curl -X POST "http://localhost:8000/api/wiki/articles/102/archive/"
@@ -362,6 +362,6 @@
 
 
 ## 三、备注
-- 文章状态枚举: `draft|published|archived`（`hertz_studio_django_wiki/models.py:35`）。
+- 文章状态枚举: `draft|published|archived`（`studio_django_wiki/models.py:35`）。
 - 分类软删除通过 `is_active=false` 实现；删除校验会阻止删除存在子分类或文章的分类（`views.py:270`）。
-- 文章详情接口会递增 `view_count`（`hertz_studio_django_wiki/models.py:70` 和 `views.py:431`）。
+- 文章详情接口会递增 `view_count`（`studio_django_wiki/models.py:70` 和 `views.py:431`）。

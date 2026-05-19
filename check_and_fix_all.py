@@ -66,8 +66,8 @@ def main():
     print("检查Vue文件结构")
     print("=" * 60)
     
-    admin_dir = r'd:\hertz_django\hertz_server_django_ui\src\views\admin_page'
-    user_dir = r'd:\hertz_django\hertz_server_django_ui\src\views\user_pages'
+    admin_dir = r'd:\django\server_django_ui\src\views\admin_page'
+    user_dir = r'd:\django\server_django_ui\src\views\user_pages'
     
     print(f"\n检查管理员页面: {admin_dir}")
     admin_affected = find_affected_files(admin_dir)

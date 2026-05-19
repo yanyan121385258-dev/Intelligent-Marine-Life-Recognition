@@ -1,0 +1,594 @@
+/* 海洋科技主题通用样式 */
+
+/* 海洋科技配色方案 */
+$ocean-primary: #64ffda;
+$ocean-secondary: #a8b2d1;
+$ocean-tertiary: #8892b0;
+$ocean-light: #ccd6f6;
+$ocean-dark-bg: #172a45;
+$ocean-darker-bg: #0a192f;
+$ocean-deep-bg: #233e60;
+
+/* 海洋科技渐变背景 */
+.ocean-bg-gradient {
+  background: linear-gradient(180deg, #0a192f 0%, #172a45 30%, #233e60 60%, #2d5280 100%);
+}
+
+/* 海洋科技卡片样式 */
+.ocean-card {
+  position: relative;
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(100, 255, 218, 0.2);
+  border-radius: 12px;
+  box-shadow:
+    0 0 40px rgba(100, 255, 218, 0.15),
+    inset 0 0 30px rgba(100, 255, 218, 0.05);
+  backdrop-filter: blur(15px);
+  overflow: hidden;
+}
+
+/* 海洋科技边框动画 */
+.ocean-border-glow {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(#172a45, #172a45) padding-box,
+    linear-gradient(135deg, #64ffda, #a8b2d1, #8892b0, #64ffda) border-box;
+  animation: oceanBorder 4s linear infinite;
+  box-shadow:
+    0 0 30px rgba(100, 255, 218, 0.15),
+    inset 0 0 30px rgba(100, 255, 218, 0.05);
+}
+
+@keyframes oceanBorder {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(60deg);
+  }
+}
+
+/* 海洋科技按钮样式 */
+.ocean-button {
+  position: relative;
+  background: linear-gradient(135deg, rgba(100, 255, 218, 0.2), rgba(168, 178, 209, 0.2)) !important;
+  border: 1px solid #64ffda !important;
+  border-radius: 12px;
+  height: 48px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #64ffda !important;
+  transition: all 0.3s ease;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  overflow: hidden;
+}
+
+.ocean-button:hover {
+  background: linear-gradient(135deg, #64ffda, #a8b2d1) !important;
+  border-color: transparent !important;
+  color: #0a192f !important;
+  box-shadow:
+    0 0 40px rgba(100, 255, 218, 0.5),
+    0 0 80px rgba(168, 178, 209, 0.3);
+  transform: translateY(-2px) scale(1.01);
+}
+
+/* 海洋科技输入框样式 */
+.ocean-input {
+  border-radius: 12px;
+  border: 1px solid rgba(100, 255, 218, 0.2);
+  background: rgba(30, 41, 59, 0.8);
+  transition: all 0.3s ease;
+  box-shadow: inset 0 0 15px rgba(100, 255, 218, 0.05);
+}
+
+.ocean-input:focus,
+.ocean-input-focused {
+  border-color: #64ffda;
+  box-shadow:
+    0 0 20px rgba(100, 255, 218, 0.3),
+    inset 0 0 20px rgba(100, 255, 218, 0.08);
+}
+
+/* 海洋科技文字颜色 */
+.ocean-text-primary {
+  color: #64ffda;
+  text-shadow: 0 0 15px rgba(100, 255, 218, 0.4);
+}
+
+.ocean-text-secondary {
+  color: #a8b2d1;
+  text-shadow: 0 0 8px rgba(168, 178, 209, 0.4);
+}
+
+.ocean-text-light {
+  color: #ccd6f6;
+}
+
+/* 海洋科技渐变文字 */
+.ocean-gradient-text {
+  background: linear-gradient(90deg, #64ffda, #a8b2d1, #8892b0, #ccd6f6, #64ffda);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: oceanGradient 5s ease infinite;
+}
+
+@keyframes oceanGradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* 海洋科技发光效果 */
+.ocean-glow {
+  filter: drop-shadow(0 0 15px rgba(100, 255, 218, 0.5));
+  animation: oceanGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes oceanGlow {
+  from {
+    filter: drop-shadow(0 0 15px rgba(100, 255, 218, 0.5));
+  }
+  to {
+    filter: drop-shadow(0 0 25px rgba(168, 178, 209, 0.7));
+  }
+}
+
+/* 海洋科技旋转动画背景 */
+.ocean-rotate-bg::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 0deg, transparent, rgba(100, 255, 218, 0.3), transparent 30%);
+  animation: rotate 8s linear infinite;
+  z-index: -1;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* 海洋科技布局容器 */
+.ocean-layout {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #0a192f 0%, #172a45 30%, #233e60 60%, #2d5280 100%);
+  overflow: hidden;
+}
+
+/* 海洋科技头部导航 */
+.ocean-header {
+  background: rgba(10, 25, 47, 0.95);
+  border-bottom: 1px solid rgba(100, 255, 218, 0.2);
+  backdrop-filter: blur(15px);
+}
+
+/* 海洋科技内容区域 */
+.ocean-content {
+  background: transparent;
+}
+
+/* 海洋科技统计卡片 */
+.ocean-stat-card {
+  background: rgba(30, 41, 59, 0.8);
+  border: 1px solid rgba(100, 255, 218, 0.2);
+  border-radius: 12px;
+  box-shadow:
+    0 0 20px rgba(100, 255, 218, 0.15),
+    inset 0 0 15px rgba(100, 255, 218, 0.05);
+  transition: all 0.3s ease;
+}
+
+.ocean-stat-card:hover {
+  border-color: #64ffda;
+  box-shadow:
+    0 0 30px rgba(100, 255, 218, 0.3),
+    inset 0 0 20px rgba(100, 255, 218, 0.08);
+  transform: translateY(-2px);
+}
+
+/* 海洋科技图标容器 */
+.ocean-icon-circle {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #64ffda, #a8b2d1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  box-shadow:
+    0 0 30px rgba(100, 255, 218, 0.4),
+    0 0 60px rgba(168, 178, 209, 0.2);
+}
+
+/* 海洋科技波纹效果 */
+.ocean-ripple {
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 1px solid rgba(100, 255, 218, 0.4);
+  animation: ripple 2s ease-out infinite;
+}
+
+.ocean-ripple.ripple-2 {
+  animation-delay: 0.5s;
+}
+
+.ocean-ripple.ripple-3 {
+  animation-delay: 1s;
+}
+
+@keyframes ripple {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* 白色到蓝色渐变过渡效果 */
+.ocean-white-to-blue-bg {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(240, 248, 255, 0.92) 20%,
+    rgba(200, 230, 255, 0.88) 40%,
+    rgba(144, 224, 239, 0.85) 60%,
+    rgba(72, 202, 228, 0.82) 80%,
+    rgba(0, 212, 255, 0.78) 100%
+  );
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* 白色到蓝色卡片效果 */
+.ocean-white-to-blue-card {
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.98) 0%,
+    rgba(245, 250, 255, 0.95) 30%,
+    rgba(230, 245, 255, 0.92) 60%,
+    rgba(200, 230, 255, 0.88) 100%
+  );
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(0, 212, 255, 0.25);
+  border-radius: 16px;
+  box-shadow:
+    0 4px 20px rgba(0, 212, 255, 0.1),
+    0 2px 8px rgba(0, 0, 0, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ocean-white-to-blue-card:hover {
+  border-color: rgba(0, 212, 255, 0.5);
+  box-shadow:
+    0 8px 30px rgba(0, 212, 255, 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  transform: translateY(-2px);
+}
+
+/* 白色到蓝色按钮效果 */
+.ocean-white-to-blue-btn {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(240, 248, 255, 0.9) 50%,
+    rgba(200, 230, 255, 0.85) 100%
+  );
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  color: #003566;
+  font-weight: 500;
+  border-radius: 10px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 8px rgba(0, 212, 255, 0.1);
+}
+
+.ocean-white-to-blue-btn:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 212, 255, 0.15) 0%,
+    rgba(72, 202, 228, 0.2) 50%,
+    rgba(144, 224, 239, 0.15) 100%
+  );
+  border-color: #00d4ff;
+  color: #001d3d;
+  box-shadow: 0 4px 15px rgba(0, 212, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+.ocean-white-to-blue-btn.primary {
+  background: linear-gradient(135deg, rgba(0, 212, 255, 0.85) 0%, rgba(72, 202, 228, 0.8) 100%);
+  border-color: transparent;
+  color: #001d3d;
+  font-weight: 600;
+}
+
+.ocean-white-to-blue-btn.primary:hover {
+  background: linear-gradient(135deg, #00d4ff 0%, #48cae4 100%);
+  box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
+}
+
+/* 白色到蓝色输入框效果 */
+.ocean-white-to-blue-input {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(245, 250, 255, 0.92) 30%,
+    rgba(235, 245, 255, 0.88) 100%
+  );
+  border: 1px solid rgba(0, 212, 255, 0.25);
+  border-radius: 10px;
+  color: #001d3d;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.ocean-white-to-blue-input:hover {
+  border-color: rgba(0, 212, 255, 0.4);
+  box-shadow:
+    inset 0 1px 3px rgba(0, 0, 0, 0.05),
+    0 0 0 3px rgba(0, 212, 255, 0.08);
+}
+
+.ocean-white-to-blue-input:focus,
+.ocean-white-to-blue-input-focused {
+  border-color: #00d4ff;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow:
+    inset 0 1px 3px rgba(0, 0, 0, 0.05),
+    0 0 0 4px rgba(0, 212, 255, 0.15);
+}
+
+/* 白色到蓝色表格容器 */
+.ocean-white-to-blue-table-container {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.96) 0%,
+    rgba(248, 252, 255, 0.93) 50%,
+    rgba(240, 248, 255, 0.9) 100%
+  );
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: 16px;
+  box-shadow:
+    0 4px 20px rgba(0, 212, 255, 0.08),
+    0 2px 8px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+}
+
+/* 白色到蓝色表头 */
+.ocean-white-to-blue-table-header {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 212, 255, 0.1) 0%,
+    rgba(72, 202, 228, 0.08) 50%,
+    rgba(144, 224, 239, 0.1) 100%
+  );
+  border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+}
+
+/* 白色到蓝色页面头部 */
+.ocean-white-to-blue-header {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(245, 250, 255, 0.92) 30%,
+    rgba(235, 245, 255, 0.88) 100%
+  );
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+  box-shadow: 0 2px 12px rgba(0, 212, 255, 0.08);
+}
+
+/* 白色到蓝色操作栏 */
+.ocean-white-to-blue-action-bar {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.92) 0%,
+    rgba(245, 250, 255, 0.88) 50%,
+    rgba(235, 245, 255, 0.84) 100%
+  );
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(0, 212, 255, 0.18);
+  border-radius: 14px;
+  box-shadow: 0 3px 15px rgba(0, 212, 255, 0.06);
+}
+
+/* 全局 Ant Design Vue 组件覆盖样式 */
+.ocean-theme-global {
+  // 覆盖按钮样式
+  :deep(.ant-btn-primary) {
+    background: linear-gradient(135deg, #64ffda 0%, #a8b2d1 100%);
+    border: none;
+    box-shadow: 0 0 15px rgba(100, 255, 218, 0.3);
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: linear-gradient(135deg, #a8b2d1 0%, #64ffda 100%);
+      box-shadow: 0 0 25px rgba(100, 255, 218, 0.5);
+      transform: translateY(-2px);
+    }
+  }
+
+  // 覆盖卡片样式
+  :deep(.ant-card) {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(100, 255, 218, 0.15);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+  }
+
+  :deep(.ant-card-head) {
+    border-bottom: 1px solid rgba(100, 255, 218, 0.2);
+    color: #ccd6f6;
+  }
+
+  // 覆盖输入框样式
+  :deep(.ant-input),
+  :deep(.ant-select-selector),
+  :deep(.ant-picker) {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    color: #ccd6f6;
+    border-radius: 12px;
+
+    &:focus,
+    &.ant-input-focused,
+    &.ant-select-focused .ant-select-selector {
+      border-color: #64ffda;
+      box-shadow: 0 0 15px rgba(100, 255, 218, 0.3);
+    }
+  }
+
+  // 覆盖标签样式
+  :deep(.ant-tag) {
+    background: rgba(100, 255, 218, 0.1);
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    color: #64ffda;
+  }
+
+  // 覆盖表格样式
+  :deep(.ant-table) {
+    background: transparent;
+  }
+
+  :deep(.ant-table-thead > tr > th) {
+    background: rgba(30, 41, 59, 0.8);
+    color: #ccd6f6;
+    border-bottom: 1px solid rgba(100, 255, 218, 0.2);
+  }
+
+  :deep(.ant-table-tbody > tr > td) {
+    border-bottom: 1px solid rgba(100, 255, 218, 0.1);
+    color: #a8b2d1;
+  }
+
+  :deep(.ant-table-tbody > tr:hover > td) {
+    background: rgba(100, 255, 218, 0.1) !important;
+  }
+
+  // 覆盖模态框样式
+  :deep(.ant-modal-content) {
+    background: rgba(30, 41, 59, 0.95);
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 0 40px rgba(100, 255, 218, 0.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+  }
+
+  :deep(.ant-modal-header) {
+    background: transparent;
+    border-bottom: 1px solid rgba(100, 255, 218, 0.2);
+    color: #ccd6f6;
+  }
+
+  :deep(.ant-modal-title) {
+    color: #64ffda;
+    text-shadow: 0 0 8px rgba(100, 255, 218, 0.4);
+  }
+
+  :deep(.ant-modal-close-x) {
+    color: #8892b0;
+
+    &:hover {
+      color: #64ffda;
+    }
+  }
+
+  // 覆盖抽屉样式
+  :deep(.ant-drawer-content) {
+    background: rgba(30, 41, 59, 0.95);
+    border-left: 1px solid rgba(100, 255, 218, 0.2);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+  }
+
+  :deep(.ant-drawer-header) {
+    border-bottom: 1px solid rgba(100, 255, 218, 0.2);
+    color: #ccd6f6;
+  }
+
+  :deep(.ant-drawer-title) {
+    color: #64ffda;
+  }
+
+  // 覆盖下拉菜单样式
+  :deep(.ant-dropdown-menu) {
+    background: rgba(30, 41, 59, 0.95);
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    border-radius: 12px;
+    box-shadow: 0 0 30px rgba(100, 255, 218, 0.15);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+  }
+
+  :deep(.ant-dropdown-menu-item) {
+    color: #ccd6f6;
+
+    &:hover {
+      background: rgba(100, 255, 218, 0.15);
+      color: #64ffda;
+    }
+  }
+
+  // 覆盖徽章样式
+  :deep(.ant-badge-count) {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ff8e8e 100%);
+    box-shadow: 0 0 10px rgba(255, 107, 107, 0.4);
+  }
+
+  // 覆盖分页样式
+  :deep(.ant-pagination-item) {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    color: #8892b0;
+
+    &:hover {
+      border-color: #64ffda;
+      color: #64ffda;
+    }
+
+    &.ant-pagination-item-active {
+      background: linear-gradient(135deg, #64ffda 0%, #a8b2d1 100%);
+      border-color: transparent;
+      color: #0a192f;
+      box-shadow: 0 0 15px rgba(100, 255, 218, 0.4);
+    }
+  }
+
+  :deep(.ant-pagination-prev),
+  :deep(.ant-pagination-next) {
+    color: #8892b0;
+
+    &:hover {
+      color: #64ffda;
+    }
+  }
+}

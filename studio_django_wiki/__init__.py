@@ -1,0 +1,1 @@
+default_app_config = 'studio_django_wiki.apps.HertzStudioDjangoWikiConfig'

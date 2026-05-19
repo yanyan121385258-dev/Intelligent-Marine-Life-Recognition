@@ -18,9 +18,9 @@ from pathlib import Path
 from django.db import transaction
 from django.db import models
 from django.core.management import call_command
-from hertz_studio_django_utils.config.menus_config import menus, add_new_menus
-from hertz_studio_django_utils.config.departments_config import departments
-from hertz_studio_django_utils.config.roles_config import roles
+from studio_django_utils.config.menus_config import menus, add_new_menus
+from studio_django_utils.config.departments_config import departments
+from studio_django_utils.config.roles_config import roles
 
 
 
@@ -51,7 +51,7 @@ def register_app_in_settings(settings_path: str, app_name: str) -> bool:
         match = re.search(pattern, content, re.DOTALL)
         
         if not match:
-            print("❌ 未找到INSTALLED_APPS配置")
+            print("未找到INSTALLED_APPS配置")
             return False
         
         # 获取INSTALLED_APPS的内容
@@ -87,11 +87,11 @@ def register_app_in_settings(settings_path: str, app_name: str) -> bool:
         with open(settings_path, 'w', encoding='utf-8') as f:
             f.write(new_content)
         
-        print(f"✅ 应用 {app_name} 已注册到settings.py")
+        print(f"应用 {app_name} 已注册到settings.py")
         return True
-        
+
     except Exception as e:
-        print(f"❌ 注册应用到settings.py失败: {e}")
+        print(f"注册应用到settings.py失败: {e}")
         return False
 
 
@@ -121,7 +121,7 @@ def register_urls_in_project(urls_path: str, app_name: str) -> bool:
         match = re.search(pattern, content, re.DOTALL)
         
         if not match:
-            print("❌ 未找到urlpatterns配置")
+            print("未找到urlpatterns配置")
             return False
         
         # 获取urlpatterns的内容
@@ -131,9 +131,9 @@ def register_urls_in_project(urls_path: str, app_name: str) -> bool:
         
         # 生成URL路由配置
         # 根据应用名称生成合适的URL前缀
-        if app_name.startswith('hertz_studio_django_'):
+        if app_name.startswith('studio_django_'):
             # 提取模块名作为URL前缀
-            module_name = app_name.replace('hertz_studio_django_', '')
+            module_name = app_name.replace('studio_django_', '')
             url_prefix = f"api/{module_name}/"
             comment = f"# Hertz {module_name.title()} routes"
         else:
@@ -177,11 +177,11 @@ def scan_and_register_new_apps() -> list:
     Returns:
         list: 新注册的应用列表
     """
-    print("🔍 扫描项目目录，查找新的Django应用...")
+    print("扫描项目目录，查找新的Django应用...")
     
     project_root = Path(__file__).parent
-    settings_path = project_root / 'hertz_server_django' / 'settings.py'
-    urls_path = project_root / 'hertz_server_django' / 'urls.py'
+    settings_path = project_root / 'server_django' / 'settings.py'
+    urls_path = project_root / 'server_django' / 'urls.py'
     
     # 读取当前已注册的应用
     registered_apps = set()
@@ -191,35 +191,35 @@ def scan_and_register_new_apps() -> list:
         spec.loader.exec_module(settings_module)
         registered_apps = set(settings_module.INSTALLED_APPS)
     except Exception as e:
-        print(f"❌ 读取settings.py失败: {e}")
+        print(f"读取settings.py失败: {e}")
         return []
     
     # 扫描项目目录，查找Django应用
     new_apps = []
     for item in project_root.iterdir():
-        if item.is_dir() and item.name.startswith('hertz_studio_django_'):
+        if item.is_dir() and item.name.startswith('studio_django_'):
             app_name = item.name
             
             # 检查是否是Django应用（包含apps.py文件）
             apps_py = item / 'apps.py'
             if apps_py.exists() and app_name not in registered_apps:
-                print(f"🆕 发现新应用: {app_name}")
+                print(f"发现新应用: {app_name}")
                 
                 # 1. 注册到settings.py
                 if register_app_in_settings(str(settings_path), app_name):
                     # 2. 注册到urls.py
                     if register_urls_in_project(str(urls_path), app_name):
                         new_apps.append(app_name)
-                        print(f"✅ 应用 {app_name} 注册成功")
+                        print(f"应用 {app_name} 注册成功")
                     else:
-                        print(f"❌ 应用 {app_name} URL注册失败")
+                        print(f"应用 {app_name} URL注册失败")
                 else:
-                    print(f"❌ 应用 {app_name} settings注册失败")
-    
+                    print(f"应用 {app_name} settings注册失败")
+
     if new_apps:
-        print(f"🎉 成功注册 {len(new_apps)} 个新应用: {', '.join(new_apps)}")
+        print(f"成功注册 {len(new_apps)} 个新应用: {', '.join(new_apps)}")
     else:
-        print("✅ 没有发现新的Django应用")
+        print("没有发现新的Django应用")
     
     return new_apps
 
@@ -238,10 +238,10 @@ def execute_migrations_for_new_apps(new_apps: list) -> bool:
         return True
     
     try:
-        print(f"📋 为新应用执行数据库迁移: {', '.join(new_apps)}")
+        print(f"为新应用执行数据库迁移: {', '.join(new_apps)}")
         
         for app_name in new_apps:
-            print(f"📝 为应用 {app_name} 生成迁移文件...")
+            print(f"为应用 {app_name} 生成迁移文件...")
             try:
                 # 先检查应用是否在Django中正确加载
                 from django.apps import apps
@@ -273,7 +273,7 @@ def init_superuser():
     """
     初始化超级管理员账号
     """
-    from hertz_studio_django_auth.models import HertzUser
+    from studio_django_auth.models import HertzUser
     
     print("正在初始化超级管理员账号...")
     
@@ -295,7 +295,7 @@ def init_superuser():
     return superuser
 
 def init_demo_user():
-    from hertz_studio_django_auth.models import HertzUser, HertzUserRole, HertzRole
+    from studio_django_auth.models import HertzUser, HertzUserRole, HertzRole
     print("正在初始化普通用户账号...")
     if HertzUser.objects.filter(username='demo').exists():
         print("普通用户账号已存在，跳过创建")
@@ -325,7 +325,7 @@ def init_departments():
     """
     初始化部门数据
     """
-    from hertz_studio_django_auth.models import HertzDepartment
+    from studio_django_auth.models import HertzDepartment
     
     print("正在初始化部门数据...")
     
@@ -361,7 +361,7 @@ def init_menus():
     """
     初始化菜单数据
     """
-    from hertz_studio_django_auth.models import HertzMenu
+    from studio_django_auth.models import HertzMenu
     
     print("正在初始化菜单数据...")
     
@@ -398,7 +398,7 @@ def init_roles():
     """
     初始化角色数据
     """
-    from hertz_studio_django_auth.models import HertzRole
+    from studio_django_auth.models import HertzRole
     
     print("正在初始化角色数据...")
     
@@ -426,7 +426,7 @@ def assign_role_menus(roles, menus):
     """
     分配角色菜单权限
     """
-    from hertz_studio_django_auth.models import HertzRoleMenu
+    from studio_django_auth.models import HertzRoleMenu
     
     print("正在分配角色菜单权限...")
     
@@ -479,7 +479,7 @@ def assign_role_menus(roles, menus):
             print(f"为系统管理员分配日志权限: {menu.menu_name}")
     
     # 确保超级管理员也拥有所有日志权限（包括动态创建的子菜单）
-    from hertz_studio_django_auth.models import HertzMenu
+    from studio_django_auth.models import HertzMenu
     all_log_menus = HertzMenu.objects.filter(menu_code__icontains='log', status=1)
     for menu in all_log_menus:
         role_menu, created = HertzRoleMenu.objects.get_or_create(
@@ -615,7 +615,7 @@ def assign_user_roles(superuser, roles):
     """
     分配用户角色
     """
-    from hertz_studio_django_auth.models import HertzUserRole
+    from studio_django_auth.models import HertzUserRole
     
     print("正在分配用户角色...")
     
@@ -642,7 +642,7 @@ def sync_generated_menus():
     
     import glob
     import importlib.util
-    from hertz_studio_django_auth.models import HertzMenu
+    from studio_django_auth.models import HertzMenu
     
     # 动态扫描所有pending_menus_*.py文件
     project_root = Path(__file__).parent
@@ -735,7 +735,7 @@ def assign_generated_menu_permissions(generated_menus):
     if not generated_menus:
         return
     
-    from hertz_studio_django_auth.models import HertzRole, HertzRoleMenu
+    from studio_django_auth.models import HertzRole, HertzRoleMenu
     
     print("正在为生成的菜单分配权限...")
     
@@ -789,10 +789,10 @@ project_root = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, project_root)
 
 # 设置Django环境
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'hertz_server_django.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'server_django.settings')
 django.setup()
 
-from hertz_studio_django_utils.code_generator.menu_generator import MenuGenerator
+from studio_django_utils.code_generator.menu_generator import MenuGenerator
 
 
 def generate_crud_menu(args):
@@ -1018,7 +1018,7 @@ class ServerManager:
             sys.executable, '-m', 'daphne',
             '-b', self.host,
             '-p', str(self.port),
-            'hertz_server_django.asgi:application'
+            'server_django.asgi:application'
         ]
         
         try:
@@ -1027,10 +1027,10 @@ class ServerManager:
                 cwd=self.base_dir,
                 creationflags=subprocess.CREATE_NEW_PROCESS_GROUP if sys.platform == 'win32' else 0
             )
-            print("✅ 服务器启动成功")
+            print("服务器启动成功")
             return True
         except Exception as e:
-            print(f"❌ 服务器启动失败: {e}")
+            print(f"服务器启动失败: {e}")
             return False
     
     def stop_server(self):
@@ -1068,7 +1068,7 @@ class ServerManager:
             self.watcher.start()
             
             for path in existing_paths:
-                print(f"👀 监听目录: {path.name}")
+                print(f"监听目录: {path.name}")
     
     def stop_file_watcher(self):
         """停止文件监听器"""
@@ -1157,7 +1157,7 @@ def check_initial_data():
     """
     检查是否存在初始数据
     """
-    from hertz_studio_django_auth.models import HertzUser, HertzMenu
+    from studio_django_auth.models import HertzUser, HertzMenu
     
     try:
         # 检查是否存在超级管理员用户
@@ -1177,71 +1177,71 @@ def main():
     """
     主函数 - 自动化数据库检查、迁移、初始化和服务器启动
     """
-    print("🚀 启动Hertz Server Django")
-    print("📋 开始自动化启动流程...")
+    print("启动Hertz Server Django")
+    print("开始自动化启动流程...")
     print("\n" + "=" * 50)
     
     # 设置Django环境
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'hertz_server_django.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'server_django.settings')
     django.setup()
     
     # 步骤0: 扫描并注册新应用
-    print("🔍 步骤0: 扫描并注册新的Django应用...")
+    print("步骤0: 扫描并注册新的Django应用...")
     new_apps = scan_and_register_new_apps()
     
     # 如果有新应用注册，需要重新加载Django设置
     if new_apps:
-        print("🔄 重新加载Django设置...")
+        print("重新加载Django设置...")
         # 重新导入settings模块
         import importlib
         from django.conf import settings
         
         # 重新导入settings模块
-        settings_module = importlib.import_module('hertz_server_django.settings')
+        settings_module = importlib.import_module('server_django.settings')
         importlib.reload(settings_module)
         
         # 重新配置Django
-        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'hertz_server_django.settings')
+        os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'server_django.settings')
         django.setup()
         
         # 为新应用执行迁移
         execute_migrations_for_new_apps(new_apps)
     
     # 步骤1: 检查数据库是否存在
-    print("📊 步骤1: 检查数据库状态...")
+    print("步骤1: 检查数据库状态...")
     if not check_database_exists():
-        print("❌ 数据库不存在，需要创建")
+        print("数据库不存在，需要创建")
         created = create_mysql_database_if_missing()
         need_migration = True
     else:
-        print("✅ 数据库文件存在")
+        print("数据库文件存在")
         need_migration = False
     
     # 步骤2: 执行数据库迁移（如果需要）
     if need_migration or not check_initial_data():
-        print("\n📋 步骤2: 执行数据库迁移...")
+        print("\n步骤2: 执行数据库迁移...")
         if not run_migrations():
-            print("❌ 数据库迁移失败，无法继续")
+            print("数据库迁移失败，无法继续")
             sys.exit(1)
     else:
-        print("\n✅ 步骤2: 数据库迁移已完成")
+        print("\n步骤2: 数据库迁移已完成")
     
     # 步骤3: 检查并初始化数据
-    print("\n📋 步骤3: 检查初始数据...")
+    print("\n步骤3: 检查初始数据...")
     if not check_initial_data():
-        print("❌ 缺少初始数据，开始初始化")
+        print("缺少初始数据，开始初始化")
         init_database()
     else:
-        print("✅ 初始数据已存在")
+        print("初始数据已存在")
         # 即使初始数据存在，也要同步生成的菜单
         sync_generated_menus()
     
     print("\n" + "=" * 50)
-    print("✅ 数据库准备完成！")
+    print("数据库准备完成！")
     
     # 步骤4: 启动服务器
-    print("\n📋 步骤4: 启动服务器...")
-    print("🚀 启动Hertz Server Django (支持HTTP + WebSocket + 热重启)")
+    print("\n步骤4: 启动服务器...")
+    print("启动Hertz Server Django (支持HTTP + WebSocket + 热重启)")
     parser = argparse.ArgumentParser(add_help=False)
     parser.add_argument('--port', type=int)
     args, _ = parser.parse_known_args()
@@ -1251,10 +1251,10 @@ def main():
     except ValueError:
         env_port_int = None
     port = args.port or env_port_int or 8000
-    print("📡 使用Daphne ASGI服务器")
-    print(f"🌐 HTTP服务: http://127.0.0.1:{port}/")
-    print(f"🔌 WebSocket服务: ws://127.0.0.1:{port}/ws/")
-    print("🔥 自动热重启: 已启用")
+    print("使用Daphne ASGI服务器")
+    print(f"HTTP服务: http://127.0.0.1:{port}/")
+    print(f"WebSocket服务: ws://127.0.0.1:{port}/ws/")
+    print("自动热重启: 已启用")
     print("\n按 Ctrl+C 停止服务器\n")
     
     # 检查依赖
@@ -1286,14 +1286,14 @@ def main():
                 try:
                     time.sleep(1)
                 except KeyboardInterrupt:
-                    print("\n🛑 收到停止信号，正在关闭服务器...")
+                    print("\n收到停止信号，正在关闭服务器...")
                     break
         
     except Exception as e:
-        print(f"❌ 启动失败: {e}")
+        print(f"启动失败: {e}")
     finally:
         server_manager.shutdown()
-        print("👋 服务器已停止")
+        print("服务器已停止")
 
 if __name__ == "__main__":
     main()

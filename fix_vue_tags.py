@@ -1,6 +1,6 @@
 import re
 
-file_path = r'd:\hertz_django\hertz_server_django_ui\src\views\user_pages\index.vue'
+file_path = r'd:\django\server_django_ui\src\views\user_pages\index.vue'
 
 with open(file_path, 'r', encoding='utf-8') as f:
     content = f.read()
